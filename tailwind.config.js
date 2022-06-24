@@ -12,11 +12,15 @@ module.exports = {
       },
     },
     fontSize: {
-      'timer': '256px',
+      'timer': ['256px', '85%'],
       'l': '24px',
       'm': '16px',
       's': '12px',
-    }
+    },
+    colors: {
+      'red950': '#0D0404',
+      'red50': '#FFF2F2',
+    },
   },
   plugins: [],
 }
