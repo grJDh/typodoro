@@ -9,9 +9,12 @@ module.exports = {
         'sans': ['Roboto Flex', ...defaultTheme.fontFamily.sans],
       },
     },
-    fontFamily: {
-      'sans': ['Roboto Flex', 'sans-serif'],
-    },
+    fontSize: {
+      'timer': '256px',
+      'l': '24px',
+      'm': '16px',
+      's': '12px',
+    }
   },
   plugins: [],
 }
