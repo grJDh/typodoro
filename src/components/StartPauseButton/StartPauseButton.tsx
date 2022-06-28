@@ -31,7 +31,7 @@ type Props = {
 const StartPauseButton = ({ isRunning=false, toggleTimer }:Props ) => {
 
   return (
-    <Wrapper onClick={toggleTimer}>
+    <Wrapper onClick={toggleTimer} aria-label='Start/Pause'>
       <Icon src={isRunning ? pauseicon : starticon} alt={isRunning ? 'Pause' : 'Start'} />
     </Wrapper>
   );

@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import skipicon from './skip.svg';
 import dotsicon from './dots.svg';
 
-const Wrapper = styled.div`
+const Wrapper = styled.button`
   width: 80px;
   height: 80px;
+  border: 0;
   border-radius: 24px;
   background-color: ${props => props.theme.color.redAlpha100};
+  cursor: pointer;
 
   display: flex;
   justify-content: center;
@@ -28,8 +30,8 @@ type Props = {
 const SecondaryButton = ({ icon='skip' }: Props) => {
 
   return (
-    <Wrapper>
-      <Icon src={(icon === "dots") ? dotsicon : skipicon} alt='Skip to the next phase' />
+    <Wrapper aria-label={icon}>
+      <Icon src={(icon === "menu") ? dotsicon : skipicon} alt={(icon === 'skip') ? 'Skip to the next phase' : 'Open menu' } />
     </Wrapper>
   );
 }
