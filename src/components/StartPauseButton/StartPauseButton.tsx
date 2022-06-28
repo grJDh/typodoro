@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
-import starticon from './start.svg'
+import starticon from './start.svg';
+import pauseicon from './pause.svg';
 
-const Wrapper = styled.div`
+const Wrapper = styled.button`
   width: 128px;
   height: 96px;
-  /* border: 2px solid #FFF2F2; */
+  border: 0;
   border-radius: 32px;
   background-color: ${props => props.theme.color.redAlpha700};
-  /* border-color: ${props => props.theme.color.red50}; */
+  cursor: pointer;
 
   display: flex;
   justify-content: center;
@@ -22,11 +23,16 @@ const Icon = styled.img`
   /* margin-left: 4px; */
 `;
 
-const StartPauseButton = ({ isEnabled=false }) => {
+type Props = {
+  isRunning: boolean;
+  toggleTimer: () => void;
+};
+
+const StartPauseButton = ({ isRunning=false, toggleTimer }:Props ) => {
 
   return (
-    <Wrapper>
-      <Icon src={starticon} alt={isEnabled ? 'Pause' : 'Start'} />
+    <Wrapper onClick={toggleTimer}>
+      <Icon src={isRunning ? pauseicon : starticon} alt={isRunning ? 'Pause' : 'Start'} />
     </Wrapper>
   );
 }
