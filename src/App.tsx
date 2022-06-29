@@ -48,27 +48,27 @@ const ButtonsWrapper = styled.div`
   justify-content: space-between;
 `;
 
+//fix timer with Date()
+
 const App = () => {
 
-  const starterMinutes = 2;
-  const starterSeconds = 0;
+  const phasesQueue = ['focus', 'short', 'focus', 'short', 'focus', 'short', 'focus', 'long'];
+  const focusTime = [0,3] //minutues, seconds
+  const shortBreakTime = [0,2];
+  const longBreakTime = [0,5];
 
   const [isRunning, setIsRunning] = useState(false);
-  const [minutes, setMinutes] = useState(starterMinutes);
-  const [seconds, setSeconds] = useState(starterSeconds);
-  const [frozenMinutes, setFrozenMinutes] = useState(starterMinutes);
-  const [frozenSeconds, setFrozenSeconds] = useState(starterSeconds);
+  const [currentTime, setCurrentTime] = useState(focusTime);
+  const [frozenTime, setFrozenTime] = useState(focusTime);
+  const [currentPhase, setCurrentPhase] = useState(0);
 
-  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  const formattedMinutes = currentTime[0] < 10 ? `0${currentTime[0]}` : currentTime[0];
+  const formattedSeconds = currentTime[1] < 10 ? `0${currentTime[1]}` : currentTime[1];
 
   const toggleTimer = () => {
     setIsRunning(!isRunning);
 
-    if (isRunning) {
-      setFrozenMinutes(minutes);
-      setFrozenSeconds(seconds);
-    }
+    if (isRunning) setFrozenTime(currentTime);
   } 
 
   useEffect(() => {
@@ -76,23 +76,34 @@ const App = () => {
       let timerOneSecondInterval = setTimeout(() => {
         clearTimeout(timerOneSecondInterval);
     
-        if (seconds === 0) {
-          if (minutes !== 0) {
-            setMinutes(minutes - 1);
-            setSeconds(59);
+        if (currentTime[1] === 0) {
+          if (currentTime[1] !== 0) {
+            setCurrentTime([currentTime[1] - 1, 59]);
           } else {
-            setMinutes(starterMinutes);
-            setSeconds(starterSeconds);
+            const nextPhase = (currentPhase === 7) ? 0 : currentPhase + 1;
+            if (phasesQueue[currentPhase] === 'long') setCurrentPhase(0)
+            else setCurrentPhase(currentPhase + 1);
+
+            switch (phasesQueue[nextPhase]) {
+              case 'short':
+                setCurrentTime(shortBreakTime);
+                break;
+              case 'long':
+                setCurrentTime(longBreakTime);
+                break;
+              default:
+                setCurrentTime(focusTime);
+                break;
+            }
           }
         } else {
-          setSeconds(seconds - 1);
+          setCurrentTime([currentTime[0], currentTime[1] - 1]);
         }
       }, 1000);
     } else {
-      setMinutes(frozenMinutes);
-      setSeconds(frozenSeconds);
+      setCurrentTime(frozenTime);
     }
-  }, [isRunning, minutes, seconds]);
+  }, [isRunning, currentTime, frozenTime, currentPhase, phasesQueue, shortBreakTime, longBreakTime, focusTime]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -100,7 +111,7 @@ const App = () => {
       <GlobalStyle />
 
       <MainWrapper>
-        <Phase />
+        <Phase phase={phasesQueue[currentPhase]} />
 
         <TimerWrapper>
           <TimerTime isRunning={isRunning}>{formattedMinutes}</TimerTime>
@@ -108,7 +119,7 @@ const App = () => {
         </TimerWrapper>
 
         <ButtonsWrapper>
-          <SecondaryButton icon="dots" />
+          <SecondaryButton icon="menu" />
           <StartPauseButton isRunning={isRunning} toggleTimer={toggleTimer} />
           <SecondaryButton icon="skip" />
         </ButtonsWrapper>
