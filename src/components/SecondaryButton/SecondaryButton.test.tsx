@@ -12,12 +12,12 @@ describe('Secondary Button', () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByAltText(/Skip/i)
+      screen.getByTitle(/skip/i)
     ).toBeInTheDocument();
     
   });
 
-  test('Menu button displays Skip icon', () => {
+  test('Menu button renders correctly', () => {
     render(<App />);
 
     expect(
@@ -25,7 +25,7 @@ describe('Secondary Button', () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByAltText(/menu/i)
+      screen.getByTitle(/menu/i)
     ).toBeInTheDocument();
     
   });
