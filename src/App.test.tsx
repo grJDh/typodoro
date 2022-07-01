@@ -108,6 +108,20 @@ describe('Timer is working', () => {
     });
   });
 
+  test('Skip button works correctly', () => {
+    jest.useFakeTimers();
+
+    const [minutes, seconds] = renderAppAndCheckTimer();
+    const phaseName = screen.getByRole('heading', { name: /Focus/i });
+
+    const skipButton = screen.getByRole('button', { name: /skip/i });
+    userEvent.click(skipButton);
+
+    expect(phaseName).toHaveTextContent(/Short/i);
+    expect(minutes).toHaveTextContent(shortBreakTime[0].toString());
+    expect(seconds).toHaveTextContent(shortBreakTime[1].toString());
+  });
+
   test.skip('Colors change correctly', () => {
     jest.useFakeTimers();
 
