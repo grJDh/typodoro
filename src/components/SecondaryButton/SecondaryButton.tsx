@@ -1,37 +1,77 @@
 import styled from 'styled-components';
 
-import skipicon from './skip.svg';
-import dotsicon from './dots.svg';
+interface WrapperProps {
+  phaseName: string;
+}
+const Wrapper = styled.button<WrapperProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-const Wrapper = styled.button`
+  cursor: pointer;
+  
   width: 80px;
   height: 80px;
   border: 0;
   border-radius: 24px;
-  background-color: ${props => props.theme.color.redAlpha100};
-  cursor: pointer;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${props => {
+    switch (props.phaseName) {
+      case "short":
+        return `
+          background-color: ${props.theme.color.greenAlpha100};
+        `
+      case "long":
+        return `
+          background-color: ${props.theme.color.blueAlpha100};
+        `
+      default:
+        return `
+          background-color: ${props.theme.color.redAlpha100};
+        `
+    }
+  }};
 `;
 
-const Icon = styled.img`
-  /* background-color: ${props => props.theme.color.red50}; */
-  /* -webkit-mask: url(ph_brain-fill.svg) no-repeat center;
-  mask: url(ph_brain-fill.svg) no-repeat center; */
-  /* margin-left: 4px; */
+interface IconProps {
+  phaseName: string;
+  src: string;
+  alt: string;
+  title: string;
+}
+const Icon = styled.svg<IconProps>`
+  mask: ${props => `url(${props.src}) no-repeat center`};
+  ${props => {
+    switch (props.phaseName) {
+      case "short":
+        return `
+          background-color: ${props.theme.color.green50};
+        `
+      case "long":
+        return `
+          background-color: ${props.theme.color.blue50};
+        `
+      default:
+        return `
+          background-color: ${props.theme.color.red50};
+        `
+    }
+  }};
 `;
 
 type Props = {
+  phaseName: string;
   icon: string;
+  alt: string;
+  aria: string;
+  onClick: () => void;
 };
 
-const SecondaryButton = ({ icon='skip' }: Props) => {
+const SecondaryButton = ({ phaseName="focus", icon, alt='Skip to the next phase', aria="skip", onClick }: Props) => {
 
   return (
-    <Wrapper aria-label={icon}>
-      <Icon src={(icon === "menu") ? dotsicon : skipicon} alt={(icon === 'skip') ? 'Skip to the next phase' : 'Open menu' } />
+    <Wrapper phaseName={phaseName} aria-label={aria} onClick={onClick}>
+      <Icon phaseName={phaseName} src={icon} alt={alt} title={aria} />
     </Wrapper>
   );
 }
