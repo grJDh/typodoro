@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import App from '../../App';
 
-test('Start button changes to Pause after click', () => {
+test('Start/Pause button toggles after click', () => {
   render(<App />);
   const startTimerButton = screen.getByRole('button', { name: /Start/i });
   userEvent.click(startTimerButton);
@@ -11,9 +11,17 @@ test('Start button changes to Pause after click', () => {
   expect(
     screen.getByTitle(/Pause/i)
   ).toBeInTheDocument();
-
   expect(
     screen.queryByTitle(/Start/i)
+  ).toBeNull();
+
+  userEvent.click(startTimerButton);
+
+  expect(
+    screen.getByTitle(/Start/i)
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByTitle(/Pause/i)
   ).toBeNull();
   
 });
