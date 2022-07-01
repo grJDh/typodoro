@@ -7,8 +7,7 @@ const GlobalStyle = createGlobalStyle`
     height: -webkit-fill-available;
   }
 
-  html { 
-    background-color: #0D0404;
+  html {
     font-family: ${props => props.theme.font.family.default};
   }
 
