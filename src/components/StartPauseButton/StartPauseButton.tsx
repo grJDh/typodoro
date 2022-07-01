@@ -3,36 +3,81 @@ import styled from 'styled-components';
 import starticon from './start.svg';
 import pauseicon from './pause.svg';
 
-const Wrapper = styled.button`
+interface WrapperProps {
+  phaseName: string;
+}
+const Wrapper = styled.button<WrapperProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
   width: 128px;
   height: 96px;
   border: 0;
   border-radius: 32px;
-  background-color: ${props => props.theme.color.redAlpha700};
-  cursor: pointer;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${props => {
+    switch (props.phaseName) {
+      case "short":
+        return `
+          background-color: ${props.theme.color.greenAlpha700};
+        `
+      case "long":
+        return `
+          background-color: ${props.theme.color.blueAlpha700};
+        `
+      default:
+        return `
+          background-color: ${props.theme.color.redAlpha700};
+        `
+    }
+  }};
 `;
 
-const Icon = styled.img`
-  /* background-color: ${props => props.theme.color.red50}; */
-  /* -webkit-mask: url(ph_brain-fill.svg) no-repeat center;
-  mask: url(ph_brain-fill.svg) no-repeat center; */
-  /* margin-left: 4px; */
+interface IconProps {
+  phaseName: string;
+  src: string;
+  title: string;
+  alt: string;
+}
+const Icon = styled.svg<IconProps>`
+  mask: ${props => `url(${props.src}) no-repeat center`};
+  ${props => {
+    switch (props.phaseName) {
+      case "short":
+        return `
+          background-color: ${props.theme.color.green50};
+        `
+      case "long":
+        return `
+          background-color: ${props.theme.color.blue50};
+        `
+      default:
+        return `
+          background-color: ${props.theme.color.red50};
+        `
+    }
+  }};
 `;
 
 type Props = {
+  phaseName: string;
   isRunning: boolean;
   toggleTimer: () => void;
 };
 
-const StartPauseButton = ({ isRunning=false, toggleTimer }:Props ) => {
+const StartPauseButton = ({ phaseName="focus", isRunning=false, toggleTimer }:Props ) => {
 
   return (
-    <Wrapper onClick={toggleTimer} aria-label='Start/Pause'>
-      <Icon src={isRunning ? pauseicon : starticon} alt={isRunning ? 'Pause' : 'Start'} />
+    <Wrapper phaseName={phaseName} onClick={toggleTimer} aria-label='Start/Pause'>
+      <Icon
+        phaseName={phaseName}
+        src={isRunning ? pauseicon : starticon}
+        title={isRunning ? 'Pause' : 'Start'}
+        alt={isRunning ? 'Pause' : 'Start'}
+      />
     </Wrapper>
   );
 }
