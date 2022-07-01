@@ -1,35 +1,103 @@
 import styled from 'styled-components';
 
-import brainicon from './ph_brain-fill.svg'
+import focus_icon_dark from './focus_dark.svg';
+import break_icon_dark from './break_dark.svg';
 
-const Wrapper = styled.div`
-  width: 136px;
-  height: 48px;
-  border: 2px solid #FFF2F2;
-  border-radius: 9999px;
-  background-color: ${props => props.theme.color.redAlpha100};
-  border-color: ${props => props.theme.color.red50};
-
+interface WrapperProps {
+  phaseName: string;
+}
+const Wrapper = styled.div<WrapperProps>`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  /* padding: 8px 16px 8px 16px;
-  box-sizing: border-box; */
+
+  height: 48px;
+  border: 2px solid;
+  border-radius: 9999px;
+  box-sizing: border-box;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  ${props => {
+    switch (props.phaseName) {
+      case "short":
+        return `
+          width: 195px;
+          background-color: ${props.theme.color.greenAlpha100};
+          border-color: ${props.theme.color.green50};
+        `
+      case "long":
+        return `
+          width: 190px;
+          background-color: ${props.theme.color.blueAlpha100};
+          border-color: ${props.theme.color.blue50};
+        `
+      default:
+        return `
+          width: 136px;
+          background-color: ${props.theme.color.redAlpha100};
+          border-color: ${props.theme.color.red50};
+        `
+    }
+  }};
 `;
 
-const Icon = styled.img`
-  /* background-color: ${props => props.theme.color.red50}; */
-  /* -webkit-mask: url(ph_brain-fill.svg) no-repeat center;
-  mask: url(ph_brain-fill.svg) no-repeat center; */
-  margin-right: 8px;
+interface IconProps {
+  phaseName: string;
+  src: string;
+  alt: string;
+  title: string;
+}
+const Icon = styled.svg<IconProps>`
+  width: 32px;
+  height: 32px;
+  mask: ${props => `url(${props.src}) no-repeat center`};
+  ${props => {
+    switch (props.phaseName) {
+      case "short":
+        return `
+          background-color: ${props.theme.color.green50};
+        `
+      case "long":
+        return `
+          background-color: ${props.theme.color.blue50};
+        `
+      default:
+        return `
+          background-color: ${props.theme.color.red50};
+        `
+    }
+  }};
 `;
 
-const Phase = ({ phaseName="Focus" }) => {
+const Phase = ({ phaseName="focus" }) => {
+
+  const returnPhaseName = () => {
+    switch (phaseName) {
+      case "short":
+        return "Short Break";
+      case "long":
+        return "Long Break";
+      default:
+        return "Focus";
+    }
+  }
+
+  const returnPhaseIcon = () => {
+    switch (phaseName) {
+      case "short":
+        return break_icon_dark;
+      case "long":
+        return break_icon_dark;
+      default:
+        return focus_icon_dark;
+    }
+  }
 
   return (
-    <Wrapper>
-      <Icon src={brainicon} alt={`Phase: ${phaseName}`} />
-      <h2>{phaseName}</h2>
+    <Wrapper phaseName={phaseName}>
+      <Icon phaseName={phaseName} src={returnPhaseIcon()} alt={`Phase: ${returnPhaseName()}`} title={returnPhaseName()} />
+      <h2>{returnPhaseName()}</h2>
     </Wrapper>
   );
 }
