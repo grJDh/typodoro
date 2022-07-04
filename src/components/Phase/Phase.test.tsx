@@ -6,7 +6,7 @@ test('Phase display renders correctly', () => {
   render(<App />);
 
   expect(
-    screen.getByTitle(/Focus/i)
+    screen.getByTitle("Focus icon")
   ).toBeInTheDocument();
 
   expect(

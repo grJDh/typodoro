@@ -109,7 +109,7 @@ const App = () => {
   const toggleTimer = () => {
     setIsRunning(!isRunning);
 
-    // if (isRunning) setCurrentTime([currentTime[0], currentTime[1]]);
+    if (isRunning) setFrozenTime([currentTime[0], currentTime[1]]);
   }
 
   const changeToTheNextPhase = () => {
@@ -146,7 +146,7 @@ const App = () => {
         }
       }, 1000);
     } else {
-      // setCurrentTime([currentTime[0], currentTime[1] + 1]);
+      setCurrentTime(frozenTime);
     }
   }, [isRunning, currentTime, frozenTime, currentPhase]);
 
@@ -155,7 +155,7 @@ const App = () => {
       <Normalize />
       <GlobalStyle />
 
-      <MainWrapper phaseName={phasesQueue[currentPhase]}>
+      <MainWrapper phaseName={phasesQueue[currentPhase]} data-testid="MainWrapper">
         <Phase phaseName={phasesQueue[currentPhase]} />
 
         <TimerWrapper>
@@ -164,9 +164,9 @@ const App = () => {
         </TimerWrapper>
 
         <ButtonsWrapper>
-          <SecondaryButton phaseName={phasesQueue[currentPhase]} icon={menu_icon} alt="Open menu" aria="menu" onClick={() => null} />
+          <SecondaryButton phaseName={phasesQueue[currentPhase]} icon={menu_icon} alt="Open menu" aria="Menu" onClick={() => null} />
           <StartPauseButton phaseName={phasesQueue[currentPhase]} isRunning={isRunning} toggleTimer={toggleTimer} />
-          <SecondaryButton phaseName={phasesQueue[currentPhase]} icon={skip_icon} alt="Skip to the next phase" aria="skip" onClick={changeToTheNextPhase} />
+          <SecondaryButton phaseName={phasesQueue[currentPhase]} icon={skip_icon} alt="Skip to the next phase" aria="Skip" onClick={changeToTheNextPhase} />
         </ButtonsWrapper>
 
       </MainWrapper>

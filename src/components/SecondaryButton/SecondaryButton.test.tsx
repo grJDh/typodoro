@@ -12,7 +12,7 @@ describe('Secondary Button', () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByTitle(/skip/i)
+      screen.getByTitle("Skip icon")
     ).toBeInTheDocument();
     
   });
@@ -25,7 +25,7 @@ describe('Secondary Button', () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByTitle(/menu/i)
+      screen.getByTitle("Menu icon")
     ).toBeInTheDocument();
     
   });

@@ -67,11 +67,11 @@ type Props = {
   onClick: () => void;
 };
 
-const SecondaryButton = ({ phaseName="focus", icon, alt='Skip to the next phase', aria="skip", onClick }: Props) => {
+const SecondaryButton = ({ phaseName="focus", icon, alt='Skip to the next phase', aria="Skip", onClick }: Props) => {
 
   return (
     <Wrapper phaseName={phaseName} aria-label={aria} onClick={onClick}>
-      <Icon phaseName={phaseName} src={icon} alt={alt} title={aria} />
+      <Icon phaseName={phaseName} src={icon} alt={alt} title={aria + " icon"} />
     </Wrapper>
   );
 }

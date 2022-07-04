@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
-import { arrayBuffer } from 'stream/consumers';
+import theme from './theme';
 
 import App from './App';
 
@@ -11,6 +11,10 @@ describe('Timer is working', () => {
   const focusTime = [25,0]; //minutues, seconds
   const shortBreakTime = [5,0];
   const longBreakTime = [25,0];
+
+  const formattedMinutes = focusTime[0] < 10 ? `0${focusTime[0]}` : focusTime[0].toString();
+  const formattedSeconds = focusTime[1] < 10 ? `0${focusTime[1]}` : focusTime[1].toString();
+
 
   const focusTimeInSeconds = (focusTime[0] * 60 + focusTime[1]);
   const shortBreakTimeInSeconds = (shortBreakTime[0] * 60 + shortBreakTime[1]);
@@ -60,6 +64,7 @@ describe('Timer is working', () => {
     const [minutes, seconds] = renderAppAndCheckTimer();
 
     const phaseName = screen.getByRole('heading', { name: /Focus/i });
+    const phaseIcon = screen.getByTitle("Focus icon");
 
     startTimer();
 
@@ -85,12 +90,22 @@ describe('Timer is working', () => {
       }
     }
 
-    phasesQueue.forEach((phase, i) => {
-      const nextPhase = (i === phasesQueue.length-1) ? phasesQueue[0] : phasesQueue[i+1]
+    const returnPhaseIconTitle = (phase:string) => {
+      switch (phase) {
+        case 'short':
+          return 'Short Break icon';
+        case 'long':
+          return 'Long Break icon';
+        default:
+          return 'Focus icon';
+      }
+    }
+
+    phasesQueue.forEach(phase => {
       const startingPhaseTime = returnPhaseTime(phase);
-      const startingNextPhaseTime = returnPhaseTime(nextPhase);
 
       expect(phaseName).toHaveTextContent(new RegExp(phase, "i"));
+      expect(phaseIcon).toHaveAttribute("title", returnPhaseIconTitle(phase));
       expect(minutes).toHaveTextContent(startingPhaseTime[0].toString());
       expect(seconds).toHaveTextContent(startingPhaseTime[1].toString());
 
@@ -101,16 +116,10 @@ describe('Timer is working', () => {
           jest.advanceTimersToNextTimer();
         });
       }
-
-      expect(phaseName).toHaveTextContent(new RegExp(nextPhase, "i"));
-      expect(minutes).toHaveTextContent(startingNextPhaseTime[0].toString());
-      expect(seconds).toHaveTextContent(startingNextPhaseTime[1].toString());
     });
   });
 
   test('Skip button works correctly', () => {
-    jest.useFakeTimers();
-
     const [minutes, seconds] = renderAppAndCheckTimer();
     const phaseName = screen.getByRole('heading', { name: /Focus/i });
 
@@ -122,19 +131,112 @@ describe('Timer is working', () => {
     expect(seconds).toHaveTextContent(shortBreakTime[1].toString());
   });
 
-  test.skip('Colors change correctly', () => {
-    jest.useFakeTimers();
+  test.skip('Pause button works correctly', done => {
+    // it may seem strange to test it, but before if you pause a timer it would tick one more second and only then stop
+    // this test tests this behaviour
 
+    // jest.useFakeTimers();
     const [minutes, seconds] = renderAppAndCheckTimer();
 
-    startTimer();
+    const startTimerButton = screen.getByRole('button', { name: /Start/i });
+    const startTimetButtinIcon = screen.getByTitle("Start");
 
-    act(() => {
-      jest.advanceTimersToNextTimer();
-    });
+    userEvent.click(startTimerButton);
 
-    expect(minutes).toHaveTextContent((focusTime[0] - 1).toString());
-    expect(seconds).toHaveTextContent('59');
+    expect(startTimetButtinIcon).toHaveAttribute("title", "Pause");
+    // screen.debug(startTimetButtinIcon)
+
+    userEvent.click(startTimerButton);
+
+    // setTimeout(() => {
+    //   console.log(1)
+      
+    // }, 1000);
+
+    // screen.debug(startTimetButtinIcon)
+
+    // act(() => {
+    //   jest.runAllTimers();
+    // });
+
+    setTimeout(() => {
+      expect(startTimetButtinIcon).toHaveAttribute("title", "Start");
+      screen.debug(minutes);
+      screen.debug(seconds);
+      done();
+    }, 2000);
+
+    // expect(minutes).toHaveTextContent((focusTime[0] - 1).toString());
+    // expect(seconds).toHaveTextContent('58');
   });
-})
 
+  test('After starting timer time font weight toggles correctly', () => {
+    renderAppAndCheckTimer();
+    const startTimerButton = screen.getByRole('button', { name: /Start/i });
+    const timerTimeMinutes = screen.getByRole('heading', { name: formattedMinutes });
+    const timerTimeSeconds = screen.getByRole('heading', { name: formattedSeconds });
+
+    expect(timerTimeMinutes).toHaveStyle(`font-weight: 200`);
+    expect(timerTimeSeconds).toHaveStyle(`font-weight: 200`);
+
+    userEvent.click(startTimerButton);
+
+    expect(timerTimeMinutes).toHaveStyle(`font-weight: 800`);
+    expect(timerTimeSeconds).toHaveStyle(`font-weight: 800`);
+  });
+
+  test('Colors change correctly', () => {
+    renderAppAndCheckTimer();
+
+    const mainWrapper = screen.getByTestId("MainWrapper");
+    const timerTimeMinutes = screen.getByRole('heading', { name: formattedMinutes });
+    const timerTimeSeconds = screen.getByRole('heading', { name: formattedSeconds });
+    const startPauseButton = screen.getByRole('button', { name: /Start/i });
+    const startPauseButtonIcon = screen.getByTitle("Start icon");
+    const skipButton = screen.getByRole('button', { name: /skip/i });
+    const skipButtonIcon = screen.getByTitle("Skip icon");
+    const menuButton = screen.getByRole('button', { name: /menu/i });
+    const menuButtonIcon = screen.getByTitle("Menu icon");
+    const phaseWrapper = screen.getByTestId("PhaseWrapper");
+    const phaseTitle = screen.getByRole('heading', { name: /Focus/i });
+    const phaseIcon = screen.getByTitle("Focus icon");
+
+    const arrayOf950Colors = [theme.color.red950, theme.color.green950, theme.color.blue950];
+    const arrayOf50Colors = [theme.color.red50, theme.color.green50, theme.color.blue50];
+    const arrayOfAlpha700Colors = [theme.color.redAlpha700, theme.color.greenAlpha700, theme.color.blueAlpha700];
+    const arrayOfAlpha100Colors = [theme.color.redAlpha100, theme.color.greenAlpha100, theme.color.blueAlpha100];
+
+    const checkColors = (phaseNum:number) => {
+
+      expect(mainWrapper).toHaveStyle(`background-color: ${arrayOf950Colors[phaseNum]}`);
+
+      expect(timerTimeMinutes).toHaveStyle(`color: ${arrayOf50Colors[phaseNum]}`);
+      expect(timerTimeSeconds).toHaveStyle(`color: ${arrayOf50Colors[phaseNum]}`);
+
+      expect(startPauseButton).toHaveStyle(`background-color: ${arrayOfAlpha700Colors[phaseNum]}`);
+      expect(startPauseButtonIcon).toHaveStyle(`background-color: ${arrayOf50Colors[phaseNum]}`);
+
+      expect(skipButton).toHaveStyle(`background-color: ${arrayOfAlpha100Colors[phaseNum]}`);
+      expect(skipButtonIcon).toHaveStyle(`background-color: ${arrayOf50Colors[phaseNum]}`);
+
+      expect(menuButton).toHaveStyle(`background-color: ${arrayOfAlpha100Colors[phaseNum]}`);
+      expect(menuButtonIcon).toHaveStyle(`background-color: ${arrayOf50Colors[phaseNum]}`);
+
+      expect(phaseWrapper).toHaveStyle(`background-color: ${arrayOfAlpha100Colors[phaseNum]}`);
+      expect(phaseWrapper).toHaveStyle(`border-color: ${arrayOf50Colors[phaseNum]}`);
+      expect(phaseTitle).toHaveStyle(`color: ${arrayOf50Colors[phaseNum]}`);
+      expect(phaseIcon).toHaveStyle(`background-color: ${arrayOf50Colors[phaseNum]}`);
+    }
+
+    checkColors(0);
+
+    userEvent.click(skipButton);
+
+    checkColors(1);
+
+    for (let index = 0; index < 6; index++) userEvent.click(skipButton);
+
+    checkColors(2);
+
+  });
+});

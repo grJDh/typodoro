@@ -70,6 +70,28 @@ const Icon = styled.svg<IconProps>`
   }};
 `;
 
+interface PhaseTitleProps {
+  phaseName: string;
+}
+const PhaseTitle = styled.h2<PhaseTitleProps>`
+  ${props => {
+    switch (props.phaseName) {
+      case "short":
+        return `
+          color: ${props.theme.color.green50};
+        `
+      case "long":
+        return `
+          color: ${props.theme.color.blue50};
+        `
+      default:
+        return `
+          color: ${props.theme.color.red50};
+        `
+    }
+  }};
+`;
+
 const Phase = ({ phaseName="focus" }) => {
 
   const returnPhaseName = () => {
@@ -95,9 +117,9 @@ const Phase = ({ phaseName="focus" }) => {
   }
 
   return (
-    <Wrapper phaseName={phaseName}>
-      <Icon phaseName={phaseName} src={returnPhaseIcon()} alt={`Phase: ${returnPhaseName()}`} title={returnPhaseName()} />
-      <h2>{returnPhaseName()}</h2>
+    <Wrapper phaseName={phaseName} data-testid="PhaseWrapper">
+      <Icon phaseName={phaseName} src={returnPhaseIcon()} alt={`Phase: ${returnPhaseName()}`} title={returnPhaseName() + " icon"} />
+      <PhaseTitle phaseName={phaseName} >{returnPhaseName()}</PhaseTitle>
     </Wrapper>
   );
 }

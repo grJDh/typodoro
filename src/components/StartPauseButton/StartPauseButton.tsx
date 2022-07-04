@@ -75,7 +75,7 @@ const StartPauseButton = ({ phaseName="focus", isRunning=false, toggleTimer }:Pr
       <Icon
         phaseName={phaseName}
         src={isRunning ? pauseicon : starticon}
-        title={isRunning ? 'Pause' : 'Start'}
+        title={isRunning ? 'Pause icon' : 'Start icon'}
         alt={isRunning ? 'Pause' : 'Start'}
       />
     </Wrapper>

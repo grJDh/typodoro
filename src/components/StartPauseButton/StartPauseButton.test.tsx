@@ -6,23 +6,16 @@ import App from '../../App';
 test('Start/Pause button toggles after click', () => {
   render(<App />);
   const startTimerButton = screen.getByRole('button', { name: /Start/i });
-  userEvent.click(startTimerButton);
-
-  expect(
-    screen.getByTitle(/Pause/i)
-  ).toBeInTheDocument();
-  expect(
-    screen.queryByTitle(/Start/i)
-  ).toBeNull();
+  const startTimetButtinIcon = screen.getByTitle("Start icon");
 
   userEvent.click(startTimerButton);
 
-  expect(
-    screen.getByTitle(/Start/i)
-  ).toBeInTheDocument();
-  expect(
-    screen.queryByTitle(/Pause/i)
-  ).toBeNull();
-  
+  expect(startTimetButtinIcon).toHaveAttribute("title", "Pause icon");
+  expect(startTimetButtinIcon).not.toHaveAttribute("title", "Start icon");
+
+  userEvent.click(startTimerButton);
+
+  expect(startTimetButtinIcon).toHaveAttribute("title", "Start icon");
+  expect(startTimetButtinIcon).not.toHaveAttribute("title", "Pause icon");
 });
 
