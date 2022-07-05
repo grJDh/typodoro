@@ -21,11 +21,11 @@ describe('Secondary Button', () => {
     render(<App />);
 
     expect(
-      screen.getByRole('button', { name: /menu/i })
+      screen.getByRole('button', { name: /settings/i })
     ).toBeInTheDocument();
 
     expect(
-      screen.getByTitle("Menu icon")
+      screen.getByTitle("Settings icon")
     ).toBeInTheDocument();
     
   });

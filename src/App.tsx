@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { ThemeProvider } from 'styled-components';
 import { Normalize } from 'styled-normalize';
@@ -12,12 +12,12 @@ import StartPauseButton from './components/StartPauseButton/StartPauseButton';
 import SecondaryButton from "./components/SecondaryButton/SecondaryButton";
 
 import skip_icon from './components/SecondaryButton/skip.svg';
-import menu_icon from './components/SecondaryButton/dots.svg';
+import settings_icon from './components/SecondaryButton/gear.svg';
 
 interface MainWrapperProps {
   phaseName: string;
 }
-const MainWrapper = styled.div<MainWrapperProps>`
+const MainWrapper = styled.main<MainWrapperProps>`
   display: flex;
   height: 100%;
   flex-direction: column;
@@ -88,20 +88,30 @@ const ButtonsWrapper = styled.div`
 `;
 
 //fix timer with Date()
-//if you stop timer on 00:00, phase will change, but timer will stay at 00:00
+//fix skip button
 
 const App = () => {
 
-  const phasesQueue = ['focus', 'short', 'focus', 'short', 'focus', 'short', 'focus', 'long'];
+  const numberOfPomodoros = 4;
+  let tempArray = [];
+  for (let index = 0; index < numberOfPomodoros; index++) {
+    tempArray.push('focus', 'short');
+  }
+  const phasesQueue = [...tempArray.splice(0, tempArray.length-1), 'long'];
 
-  const [focusTime, setFocusTime] = useState([25,0]); //minutues, seconds
-  const [shortBreakTime, setShortBreakTime] = useState([5,0]);
-  const [longBreakTime, setLongBreakTime] = useState([25,0]);
+  // const [focusTime, setFocusTime] = useState([0, 3]); //minutues, seconds
+  // const [shortBreakTime, setShortBreakTime] = useState([0, 2]);
+  // const [longBreakTime, setLongBreakTime] = useState([0, 5]);
+
+  const [focusTime, setFocusTime] = useState([25, 0]); //minutues, seconds
+  const [shortBreakTime, setShortBreakTime] = useState([5, 0]);
+  const [longBreakTime, setLongBreakTime] = useState([25, 0]);
 
   const [isRunning, setIsRunning] = useState(false);
   const [currentTime, setCurrentTime] = useState(focusTime);
-  const [frozenTime, setFrozenTime] = useState(focusTime);
   const [currentPhase, setCurrentPhase] = useState(0);
+  const [frozenTime, setFrozenTime] = useState(focusTime);
+  const [frozenPhase, setFrozenPhase] = useState(0);
 
   const formattedMinutes = currentTime[0] < 10 ? `0${currentTime[0]}` : currentTime[0].toString();
   const formattedSeconds = currentTime[1] < 10 ? `0${currentTime[1]}` : currentTime[1].toString();
@@ -109,7 +119,10 @@ const App = () => {
   const toggleTimer = () => {
     setIsRunning(!isRunning);
 
-    if (isRunning) setFrozenTime([currentTime[0], currentTime[1]]);
+    if (isRunning) {
+      setFrozenTime(currentTime);
+      setFrozenPhase(currentPhase);
+    }
   }
 
   const changeToTheNextPhase = () => {
@@ -128,7 +141,16 @@ const App = () => {
         setCurrentTime(focusTime);
         break;
     }
-  } 
+  };
+
+  const skipPhase = () => {
+    if (isRunning) setIsRunning(false);
+
+    changeToTheNextPhase();
+
+    setFrozenTime(currentTime);
+    setFrozenPhase(currentPhase);
+  }
 
   useEffect(() => {
     if (isRunning) {
@@ -145,10 +167,12 @@ const App = () => {
           setCurrentTime([currentTime[0], currentTime[1] - 1]);
         }
       }, 1000);
-    } else {
-      setCurrentTime(frozenTime);
     }
-  }, [isRunning, currentTime, frozenTime, currentPhase]);
+    else {
+      setCurrentTime(frozenTime);
+      setCurrentPhase(frozenPhase);
+    }
+  });
 
   return (
     <ThemeProvider theme={theme}>
@@ -164,9 +188,25 @@ const App = () => {
         </TimerWrapper>
 
         <ButtonsWrapper>
-          <SecondaryButton phaseName={phasesQueue[currentPhase]} icon={menu_icon} alt="Open menu" aria="Menu" onClick={() => null} />
-          <StartPauseButton phaseName={phasesQueue[currentPhase]} isRunning={isRunning} toggleTimer={toggleTimer} />
-          <SecondaryButton phaseName={phasesQueue[currentPhase]} icon={skip_icon} alt="Skip to the next phase" aria="Skip" onClick={changeToTheNextPhase} />
+          <SecondaryButton
+            phaseName={phasesQueue[currentPhase]}
+            icon={settings_icon}
+            alt="Open settings"
+            aria="Settings"
+            onClick={() => null}
+          />
+          <StartPauseButton
+            phaseName={phasesQueue[currentPhase]}
+            isRunning={isRunning}
+            toggleTimer={toggleTimer}
+          />
+          <SecondaryButton
+            phaseName={phasesQueue[currentPhase]}
+            icon={skip_icon}
+            alt="Skip to the next phase"
+            aria="Skip"
+            onClick={skipPhase}
+          />
         </ButtonsWrapper>
 
       </MainWrapper>
