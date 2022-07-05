@@ -139,11 +139,11 @@ describe('Timer is working', () => {
     const [minutes, seconds] = renderAppAndCheckTimer();
 
     const startTimerButton = screen.getByRole('button', { name: /Start/i });
-    const startTimetButtinIcon = screen.getByTitle("Start");
+    const startTimetButtinIcon = screen.getByTitle("Start icon");
 
     userEvent.click(startTimerButton);
 
-    expect(startTimetButtinIcon).toHaveAttribute("title", "Pause");
+    expect(startTimetButtinIcon).toHaveAttribute("title", "Pause icon");
     // screen.debug(startTimetButtinIcon)
 
     userEvent.click(startTimerButton);
