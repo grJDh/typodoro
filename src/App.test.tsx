@@ -15,7 +15,6 @@ describe('Timer is working', () => {
   const formattedMinutes = focusTime[0] < 10 ? `0${focusTime[0]}` : focusTime[0].toString();
   const formattedSeconds = focusTime[1] < 10 ? `0${focusTime[1]}` : focusTime[1].toString();
 
-
   const focusTimeInSeconds = (focusTime[0] * 60 + focusTime[1]);
   const shortBreakTimeInSeconds = (shortBreakTime[0] * 60 + shortBreakTime[1]);
   const longBreakTimeInSeconds = (longBreakTime[0] * 60 + longBreakTime[1]);
@@ -168,21 +167,6 @@ describe('Timer is working', () => {
 
     // expect(minutes).toHaveTextContent((focusTime[0] - 1).toString());
     // expect(seconds).toHaveTextContent('58');
-  });
-
-  test('After starting timer time font weight toggles correctly', () => {
-    renderAppAndCheckTimer();
-    const startTimerButton = screen.getByRole('button', { name: /Start/i });
-    const timerTimeMinutes = screen.getByRole('heading', { name: formattedMinutes });
-    const timerTimeSeconds = screen.getByRole('heading', { name: formattedSeconds });
-
-    expect(timerTimeMinutes).toHaveStyle(`font-weight: 200`);
-    expect(timerTimeSeconds).toHaveStyle(`font-weight: 200`);
-
-    userEvent.click(startTimerButton);
-
-    expect(timerTimeMinutes).toHaveStyle(`font-weight: 800`);
-    expect(timerTimeSeconds).toHaveStyle(`font-weight: 800`);
   });
 
   test('Colors change correctly', () => {
