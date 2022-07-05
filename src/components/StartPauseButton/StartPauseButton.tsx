@@ -70,7 +70,7 @@ type Props = {
   toggleTimer: () => void;
 };
 
-const StartPauseButton = ({ phaseName="focus", isRunning=false, toggleTimer }:Props ) => {
+const StartPauseButton = ({ phaseName, isRunning, toggleTimer }:Props ) => {
 
   return (
     <Wrapper phaseName={phaseName} onClick={toggleTimer} aria-label='Start/Pause'>
