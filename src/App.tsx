@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import GlobalStyle from './GlobalStyle';
 import theme from './theme';
 
+import Timer from './components/Timer/Timer';
+import Settings from './components/Settings/Settings';
 import Phase from './components/Phase/Phase';
 import StartPauseButton from './components/StartPauseButton/StartPauseButton';
 import SecondaryButton from "./components/SecondaryButton/SecondaryButton";
@@ -18,8 +20,8 @@ interface MainWrapperProps {
   phaseName: string;
 }
 const MainWrapper = styled.main<MainWrapperProps>`
-  display: flex;
   height: 100%;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -37,43 +39,6 @@ const MainWrapper = styled.main<MainWrapperProps>`
       default:
         return `
           background-color: ${props.theme.color.red950};
-        `
-    }
-  }};
-`;
-
-const TimerWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 32px;
-  margin-bottom: 32px;
-`;
-
-interface TimerTimeProps {
-  isRunning: boolean;
-  phaseName: string;
-}
-const TimerTime = styled.h1<TimerTimeProps>`
-  line-height: 85%;
-
-  font-size: ${props => props.theme.font.size.timer};
-  font-weight: ${props => (props.isRunning ? 800 : 200)};
-
-  ${props => {
-    switch (props.phaseName) {
-      case "short":
-        return `
-          color: ${props.theme.color.green50};
-        `
-      case "long":
-        return `
-          color: ${props.theme.color.blue50};
-        `
-      default:
-        return `
-          color: ${props.theme.color.red50};
         `
     }
   }};
@@ -113,8 +78,7 @@ const App = () => {
   const [frozenTime, setFrozenTime] = useState(focusTime);
   const [frozenPhase, setFrozenPhase] = useState(0);
 
-  const formattedMinutes = currentTime[0] < 10 ? `0${currentTime[0]}` : currentTime[0].toString();
-  const formattedSeconds = currentTime[1] < 10 ? `0${currentTime[1]}` : currentTime[1].toString();
+  const [settingsOpened, setSettingsOpened] = useState(true);
 
   const toggleTimer = () => {
     setIsRunning(!isRunning);
@@ -174,18 +138,34 @@ const App = () => {
     }
   });
 
+  const openSettings = () => setSettingsOpened(true);
+  const closeSettings = () => setSettingsOpened(false);
+
   return (
     <ThemeProvider theme={theme}>
       <Normalize />
       <GlobalStyle />
 
-      <MainWrapper phaseName={phasesQueue[currentPhase]} data-testid="MainWrapper">
-        <Phase phaseName={phasesQueue[currentPhase]} />
+      <Settings
+        phaseName={phasesQueue[currentPhase]}
+        onClose={closeSettings}
+        isOpened={settingsOpened}
+      />
 
-        <TimerWrapper>
-          <TimerTime phaseName={phasesQueue[currentPhase]} isRunning={isRunning}>{formattedMinutes}</TimerTime>
-          <TimerTime phaseName={phasesQueue[currentPhase]} isRunning={isRunning}>{formattedSeconds}</TimerTime>
-        </TimerWrapper>
+      <MainWrapper
+        phaseName={phasesQueue[currentPhase]}
+        data-testid="MainWrapper"
+      >
+
+        <Phase
+          phaseName={phasesQueue[currentPhase]}
+        />
+
+        <Timer
+          phaseName={phasesQueue[currentPhase]}
+          isRunning={isRunning}
+          currentTime={currentTime}
+        />
 
         <ButtonsWrapper>
           <SecondaryButton
@@ -193,7 +173,7 @@ const App = () => {
             icon={settings_icon}
             alt="Open settings"
             aria="Settings"
-            onClick={() => null}
+            onClick={openSettings}
           />
           <StartPauseButton
             phaseName={phasesQueue[currentPhase]}
