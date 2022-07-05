@@ -92,7 +92,11 @@ const PhaseTitle = styled.h2<PhaseTitleProps>`
   }};
 `;
 
-const Phase = ({ phaseName="focus" }) => {
+type Props = {
+  phaseName: string;
+};
+
+const Phase = ({ phaseName }:Props ) => {
 
   const returnPhaseName = () => {
     switch (phaseName) {
