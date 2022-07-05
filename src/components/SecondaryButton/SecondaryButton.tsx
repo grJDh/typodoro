@@ -40,6 +40,8 @@ interface IconProps {
   title: string;
 }
 const Icon = styled.svg<IconProps>`
+  width: 32px;
+  height: 32px;
   mask: ${props => `url(${props.src}) no-repeat center`};
   ${props => {
     switch (props.phaseName) {
