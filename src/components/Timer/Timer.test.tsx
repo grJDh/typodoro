@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import App from '../../App';
 
-describe('Secondary Button', () => {
+describe('Timer', () => {
 
   test('After starting timer time font weight toggles correctly', () => {
     render(<App />);

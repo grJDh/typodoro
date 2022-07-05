@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 import close_icon from './close.svg';
 
+import ToggleInput from '../ToggleInput/ToggleInput';
+
 interface WrapperProps {
   isOpened: boolean;
 }
@@ -33,7 +35,8 @@ const Window = styled.dialog<WindowProps>`
   border: 0;
   border-radius: 24px;
 
-  padding: 0;
+  padding: 24px;
+  box-sizing: border-box;
 
   ${props => {
     switch (props.phaseName) {
@@ -59,10 +62,6 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 24px;
-
-  box-sizing: border-box;
 `;
 
 interface TitleProps {
@@ -152,7 +151,10 @@ const Settings = ({ phaseName, onClose, isOpened }:Props ) => {
             />
           </CloseButton>
         </Header>
-        
+        <ToggleInput phaseName={phaseName} label="Dark mode" func={() => null} />
+        <ToggleInput phaseName={phaseName} label="Auto resume timer" func={() => null} />
+        <ToggleInput phaseName={phaseName} label="Sound" func={() => null} />
+        <ToggleInput phaseName={phaseName} label="Notifications" func={() => null} />
       </Window>
     </Wrapper>
   );

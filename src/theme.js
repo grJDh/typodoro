@@ -17,6 +17,8 @@ const theme = {
     
     blueAlpha100: '#4CACFF26',
     blueAlpha700: '#4CACFFb5',
+
+    whiteAlpha200: '#FFFFFF3d',
   },
   font: {
     family: {
