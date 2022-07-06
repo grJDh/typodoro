@@ -88,15 +88,22 @@ const Toggle = styled.input<ToggleProps>`
 type Props = {
   phaseName: string;
   labelText: string;
-  func: () => void;
+  defaultValue: boolean;
+  onChange: (checked:boolean) => void;
 };
 
-const ToggleInput = ({ phaseName, labelText, func }:Props ) => {
+const ToggleInput = ({ phaseName, labelText, defaultValue, onChange }:Props ) => {
 
   return (
     <Wrapper>
       <Label htmlFor={labelText} phaseName={phaseName}>{labelText}</Label>
-      <Toggle id={labelText} type="checkbox" phaseName={phaseName}></Toggle>
+      <Toggle
+        id={labelText}
+        type="checkbox"
+        phaseName={phaseName} 
+        defaultChecked={defaultValue}
+        onChange={event => onChange(event.target.checked)}
+      />   
     </Wrapper>
   );
 }

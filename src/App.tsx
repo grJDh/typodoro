@@ -54,10 +54,10 @@ const ButtonsWrapper = styled.div`
 
 //fix timer with Date()
 //fix skip button
+//when you change focus or any other time, it doesn't change current time even if it's start
 
 const App = () => {
-
-  const numberOfPomodoros = 4;
+  const [numberOfPomodoros, setNumberOfPomodoros] = useState(4);
   let tempArray = [];
   for (let index = 0; index < numberOfPomodoros; index++) {
     tempArray.push('focus', 'short');
@@ -79,7 +79,37 @@ const App = () => {
   const [frozenPhase, setFrozenPhase] = useState(0);
 
   const [settingsOpened, setSettingsOpened] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isAutoResume, setIsAutoResume] = useState(false);
+  const [isSoundOn, setIsSoundOn] = useState(false);
+  const [areNotificationsOn, setAreNotificationsOn] = useState(false);
 
+  console.log(focusTime)
+
+  const settingsStateBoolean = [
+    settingsOpened, 
+    isDarkMode, 
+    isAutoResume, 
+    isSoundOn, 
+    areNotificationsOn, 
+  ];
+  const settingsStateNumbers = [
+    focusTime, 
+    shortBreakTime, 
+    longBreakTime, 
+  ];
+  const settingsHandlersBoolean = [
+    setIsDarkMode, 
+    setIsAutoResume, 
+    setIsSoundOn, 
+    setAreNotificationsOn, 
+  ];
+  const settingsHandlersNumbers = [
+    setFocusTime,
+    setShortBreakTime, 
+    setLongBreakTime, 
+  ];
+  
   const toggleTimer = () => {
     setIsRunning(!isRunning);
 
@@ -149,7 +179,12 @@ const App = () => {
       <Settings
         phaseName={phasesQueue[currentPhase]}
         onClose={closeSettings}
-        isOpened={settingsOpened}
+        settingsStateBoolean={settingsStateBoolean}
+        settingsStateNumbers={settingsStateNumbers}
+        settingsHandlersBoolean={settingsHandlersBoolean}
+        settingsHandlersNumbers={settingsHandlersNumbers}
+        numberOfPomodoros={numberOfPomodoros}
+        setNumberOfPomodoros={setNumberOfPomodoros}
       />
 
       <MainWrapper

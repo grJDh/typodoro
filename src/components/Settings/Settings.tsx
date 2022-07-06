@@ -136,15 +136,44 @@ const CloseIcon = styled.svg<CloseIconProps>`
 type Props = {
   phaseName: string;
   onClose: () => void;
-  isOpened: boolean;
+  settingsStateBoolean: boolean[];
+  settingsStateNumbers: number[][];
+  settingsHandlersBoolean: ((data: boolean) => void)[];
+  settingsHandlersNumbers: ((data: number[]) => void)[];
+  numberOfPomodoros: number;
+  setNumberOfPomodoros: (data: number) => void;
 };
 
-const Settings = ({ phaseName, onClose, isOpened }:Props ) => {
+const Settings = ({
+  phaseName,
+  onClose,
+  settingsStateBoolean,
+  settingsStateNumbers,
+  settingsHandlersBoolean,
+  settingsHandlersNumbers,
+  numberOfPomodoros,
+  setNumberOfPomodoros
+}:Props ) => {
+
+  const [settingsOpened, isDarkMode, isAutoResume, isSoundOn, areNotificationsOn] = settingsStateBoolean;
+  const [setIsDarkMode, setIsAutoResume, setIsSoundOn, setAreNotificationsOn] = settingsHandlersBoolean;
+  const [focusTime, shortBreakTime, longBreakTime] = settingsStateNumbers;
+  const [setFocusTime, setShortBreakTime, setLongBreakTime] = settingsHandlersNumbers;
+
+  const toggleDarkMode = (checked:boolean) => setIsDarkMode(checked);
+  const toggleAutoResume = (checked:boolean) => setIsAutoResume(checked);
+  const toggleSound = (checked:boolean) => setIsSoundOn(checked);
+  const toggleNotifications = (checked:boolean) => setAreNotificationsOn(checked);
+
+  const onSetFocusTime = (num:number) => setFocusTime([num, 0]);
+  const onSetNumberOfPomodoros = (num:number) => setNumberOfPomodoros(num);
+  const onSetShortBreakTime = (num:number) => setShortBreakTime([num, 0]);
+  const onSetLongBreakTime = (num:number) => setLongBreakTime([num, 0]);
 
   const closeOnClickOutside = (parentElement:any) => (parentElement.id === "root") && onClose();
 
   return (
-    <Wrapper isOpened={isOpened} onClick={(event) => closeOnClickOutside((event.target as HTMLTextAreaElement).parentElement)}>
+    <Wrapper isOpened={settingsOpened} onClick={(event) => closeOnClickOutside((event.target as HTMLTextAreaElement).parentElement)}>
       <Window phaseName={phaseName}>
         <Header>
           <Title phaseName={phaseName}>Settings</Title>
@@ -157,14 +186,54 @@ const Settings = ({ phaseName, onClose, isOpened }:Props ) => {
             />
           </CloseButton>
         </Header>
-        <ToggleInput phaseName={phaseName} labelText="Dark mode" func={() => null} />
-        <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
-        <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
-        <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
-        <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
-        <ToggleInput phaseName={phaseName} labelText="Auto resume timer" func={() => null} />
-        <ToggleInput phaseName={phaseName} labelText="Sound" func={() => null} />
-        <ToggleInput phaseName={phaseName} labelText="Notifications" func={() => null} />
+        <ToggleInput
+          phaseName={phaseName}
+          labelText="Dark mode" 
+          onChange={toggleDarkMode}
+          defaultValue={isDarkMode}
+        />
+        <NumInput
+          phaseName={phaseName}
+          labelText="Focus length"
+          defaultValue={focusTime[0]}
+          onChange={onSetFocusTime}
+        />
+        <NumInput
+          phaseName={phaseName}
+          labelText="Pomodoros until long break"
+          defaultValue={numberOfPomodoros}
+          onChange={onSetNumberOfPomodoros}
+        />
+        <NumInput
+          phaseName={phaseName}
+          labelText="Short break length"
+          defaultValue={shortBreakTime[0]}
+          onChange={onSetShortBreakTime}
+        />
+        <NumInput
+          phaseName={phaseName}
+          labelText="Long break length"
+          defaultValue={longBreakTime[0]}
+          onChange={onSetLongBreakTime}
+        />
+        <ToggleInput
+          phaseName={phaseName}
+          labelText="Auto resume timer"
+          onChange={toggleAutoResume}
+          defaultValue={isAutoResume}
+        />
+        <ToggleInput
+          phaseName={phaseName}
+          labelText="Sound"
+          onChange={toggleSound}
+          defaultValue={isSoundOn}
+        />
+        <ToggleInput
+          phaseName={phaseName}
+          labelText="Notifications"
+          onChange={toggleNotifications}
+          defaultValue={areNotificationsOn}
+        />
       </Window>
     </Wrapper>
   );

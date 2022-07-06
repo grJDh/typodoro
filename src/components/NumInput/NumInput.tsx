@@ -113,16 +113,23 @@ const ChangeNumButton = styled.button<ChangeNumButtonProps>`
 type Props = {
   phaseName: string;
   labelText: string;
-  func: () => void;
+  defaultValue:number;
+  onChange: (num:number) => void;
 };
 
-const NumInput = ({ phaseName, labelText, func }:Props ) => {
+const NumInput = ({ phaseName, labelText, defaultValue, onChange }:Props ) => {
 
   return (
     <Wrapper>
       <Label htmlFor={labelText} phaseName={phaseName}>{labelText}</Label>
       <ArrowsWrapper>
-        <Input type="number" id={labelText} phaseName={phaseName} />
+        <Input
+          type="number"
+          id={labelText}
+          phaseName={phaseName}
+          defaultValue={defaultValue}
+          onChange={event => onChange(parseInt(event.target.value))}
+        />
         <ChangeNumButton isDown={false}>⏶</ChangeNumButton>
         <ChangeNumButton isDown={true}>⏷</ChangeNumButton>
       </ArrowsWrapper>
