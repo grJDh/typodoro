@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import close_icon from './close.svg';
 
 import ToggleInput from '../ToggleInput/ToggleInput';
+import NumInput from '../NumInput/NumInput';
 
 interface WrapperProps {
   isOpened: boolean;
@@ -151,10 +152,11 @@ const Settings = ({ phaseName, onClose, isOpened }:Props ) => {
             />
           </CloseButton>
         </Header>
-        <ToggleInput phaseName={phaseName} label="Dark mode" func={() => null} />
-        <ToggleInput phaseName={phaseName} label="Auto resume timer" func={() => null} />
-        <ToggleInput phaseName={phaseName} label="Sound" func={() => null} />
-        <ToggleInput phaseName={phaseName} label="Notifications" func={() => null} />
+        <ToggleInput phaseName={phaseName} labelText="Dark mode" func={() => null} />
+        <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
+        <ToggleInput phaseName={phaseName} labelText="Auto resume timer" func={() => null} />
+        <ToggleInput phaseName={phaseName} labelText="Sound" func={() => null} />
+        <ToggleInput phaseName={phaseName} labelText="Notifications" func={() => null} />
       </Window>
     </Wrapper>
   );
