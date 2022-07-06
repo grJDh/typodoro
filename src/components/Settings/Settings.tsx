@@ -19,7 +19,7 @@ const Wrapper = styled.div<WrapperProps>`
   justify-content: center;
   align-items: center;
 
-  background-color: rgba(255,255,255,0.25);
+  background-color: rgba(255,255,255,0.15);
 `;
 
 interface WindowProps {
@@ -30,7 +30,7 @@ const Window = styled.dialog<WindowProps>`
   height: 610px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 
   border: 0;
@@ -59,10 +59,13 @@ const Window = styled.dialog<WindowProps>`
 
 const Header = styled.div`
   width: 100%;
-  height: 82px;
+  height: 77px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: top;
+
+  box-sizing: border-box;
+  padding-top: 5px;
 `;
 
 interface TitleProps {
@@ -153,6 +156,9 @@ const Settings = ({ phaseName, onClose, isOpened }:Props ) => {
           </CloseButton>
         </Header>
         <ToggleInput phaseName={phaseName} labelText="Dark mode" func={() => null} />
+        <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
+        <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
+        <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
         <NumInput phaseName={phaseName} labelText="Focus length" func={() => null} />
         <ToggleInput phaseName={phaseName} labelText="Auto resume timer" func={() => null} />
         <ToggleInput phaseName={phaseName} labelText="Sound" func={() => null} />
