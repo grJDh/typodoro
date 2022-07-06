@@ -10,7 +10,7 @@ describe('Toggle Input', () => {
 
     const startTimerButton = screen.getByLabelText('Dark mode')
 
-    screen.debug(startTimerButton)
+    // screen.debug(startTimerButton)
   });
 })
 

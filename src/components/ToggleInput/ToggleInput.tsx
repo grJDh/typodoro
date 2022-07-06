@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-// interface WrapperProps {
-//   phaseName: string;
-// }
-const Wrapper = styled.label`
+import theme from '../../theme';
+
+
+const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -12,15 +12,46 @@ const Wrapper = styled.label`
   height: 64px;
 `;
 
-const Toggle = styled.input`
+const returnColor950 = (phaseName:string) => {
+  switch (phaseName) {
+    case "short":
+      return theme.color.green950;
+    case "long":
+      return theme.color.blue950;
+    default:
+      return theme.color.red950;
+  }
+}
+const returnColor50 = (phaseName:string) => {
+  switch (phaseName) {
+    case "short":
+      return theme.color.green50;
+    case "long":
+      return theme.color.blue50;
+    default:
+      return theme.color.red50;
+  }
+}
+
+interface LabelProps {
+  phaseName: string;
+}
+const Label = styled.label<LabelProps>`
+  color: ${props => (returnColor50(props.phaseName))};
+`;
+
+interface ToggleProps {
+  phaseName: string;
+}
+const Toggle = styled.input<ToggleProps>`
   position: relative;
   display: inline-block;
   width: 34px;
   height: 20px;
   margin: 0;
   vertical-align: center;
-  background: ${props => (props.theme.color.red950)}; 
-  border: 1px solid ${props => (props.theme.color.red50)};
+  background-color: ${props => (props.theme.color.whiteAlpha200)};
+  border: 1px solid transparent;
   border-radius: 1000px;
   outline: none;
   cursor: pointer;
@@ -37,7 +68,7 @@ const Toggle = styled.input`
 
     width: 16px;
     height: 16px;
-    background-color: ${props => (props.theme.color.red50)};
+    background-color: ${props => (returnColor950(props.phaseName))};
     border-radius: 1000px;
 
     transform: translateX(0);
@@ -46,45 +77,28 @@ const Toggle = styled.input`
 
   &:checked:after {
     transform: translateX(calc(100% - 2px));
-    background-color: ${props => (props.theme.color.red950)};
+    background-color: ${props => (returnColor950(props.phaseName))};
   }
   &:checked {
-    background-color: ${props => (props.theme.color.red50)};
+    background-color: ${props => (returnColor50(props.phaseName))};
   }
 `;
-
-  /* ${props => {
-    switch (props.phaseName) {
-      case "short":
-        return `
-          background-color: ${props.theme.color.green950};
-        `
-      case "long":
-        return `
-          background-color: ${props.theme.color.blue950};
-        `
-      default:
-        return `
-          background-color: ${props.theme.color.red950};
-        `
-    }
-  }}; */
 
 
 type Props = {
   phaseName: string;
-  label: string;
+  labelText: string;
   func: () => void;
 };
 
-const StartPauseButton = ({ phaseName, label, func }:Props ) => {
+const ToggleInput = ({ phaseName, labelText, func }:Props ) => {
 
   return (
     <Wrapper>
-      <p>{label}</p>
-      <Toggle type="checkbox"></Toggle>
+      <Label htmlFor={labelText} phaseName={phaseName}>{labelText}</Label>
+      <Toggle id={labelText} type="checkbox" phaseName={phaseName}></Toggle>
     </Wrapper>
   );
 }
 
-export default StartPauseButton;
+export default ToggleInput;
