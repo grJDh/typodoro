@@ -141,8 +141,10 @@ type Props = {
 
 const Settings = ({ phaseName, onClose, isOpened }:Props ) => {
 
+  const closeOnClickOutside = (parentElement:any) => (parentElement.id === "root") && onClose();
+
   return (
-    <Wrapper isOpened={isOpened}>
+    <Wrapper isOpened={isOpened} onClick={(event) => closeOnClickOutside((event.target as HTMLTextAreaElement).parentElement)}>
       <Window phaseName={phaseName}>
         <Header>
           <Title phaseName={phaseName}>Settings</Title>
