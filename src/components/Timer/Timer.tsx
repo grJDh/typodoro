@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,15 +24,15 @@ const Time = styled.h1<TimeProps>`
       case "short":
         return `
           color: ${props.theme.color.green50};
-        `
+        `;
       case "long":
         return `
           color: ${props.theme.color.blue50};
-        `
+        `;
       default:
         return `
           color: ${props.theme.color.red50};
-        `
+        `;
     }
   }};
 `;
@@ -43,17 +43,20 @@ type Props = {
   currentTime: number[];
 };
 
-const Timer = ({ phaseName, isRunning, currentTime }:Props ) => {
-
+const Timer = ({ phaseName, isRunning, currentTime }: Props) => {
   const formattedMinutes = currentTime[0] < 10 ? `0${currentTime[0]}` : currentTime[0].toString();
   const formattedSeconds = currentTime[1] < 10 ? `0${currentTime[1]}` : currentTime[1].toString();
 
   return (
     <Wrapper>
-      <Time phaseName={phaseName} isRunning={isRunning}>{formattedMinutes}</Time>
-      <Time phaseName={phaseName} isRunning={isRunning}>{formattedSeconds}</Time>
+      <Time phaseName={phaseName} isRunning={isRunning}>
+        {formattedMinutes}
+      </Time>
+      <Time phaseName={phaseName} isRunning={isRunning}>
+        {formattedSeconds}
+      </Time>
     </Wrapper>
   );
-}
+};
 
 export default Timer;

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import theme from '../../theme';
+import theme from "../../theme";
 
 const Wrapper = styled.label`
   display: flex;
@@ -11,7 +11,7 @@ const Wrapper = styled.label`
   height: 64px;
 `;
 
-const returnColor950 = (phaseName:string) => {
+const returnColor950 = (phaseName: string) => {
   switch (phaseName) {
     case "short":
       return theme.color.green950;
@@ -20,8 +20,8 @@ const returnColor950 = (phaseName:string) => {
     default:
       return theme.color.red950;
   }
-}
-const returnColor50 = (phaseName:string) => {
+};
+const returnColor50 = (phaseName: string) => {
   switch (phaseName) {
     case "short":
       return theme.color.green50;
@@ -30,17 +30,17 @@ const returnColor50 = (phaseName:string) => {
     default:
       return theme.color.red50;
   }
-}
+};
 
 interface LabelProps {
   phaseName: string;
 }
 const Label = styled.label<LabelProps>`
-  color: ${props => (returnColor50(props.phaseName))};
+  color: ${props => returnColor50(props.phaseName)};
 `;
 
 const ArrowsWrapper = styled.div`
-  border: 1px solid ${props => (props.theme.color.whiteAlpha100)};
+  border: 1px solid ${props => props.theme.color.whiteAlpha100};
   border-radius: 8px;
   display: inline-flex;
   position: relative;
@@ -60,13 +60,13 @@ const Input = styled.input<InputProps>`
   height: 37px;
 
   border: 0;
-  border-right: 1px solid ${props => (props.theme.color.whiteAlpha100)};
+  border-right: 1px solid ${props => props.theme.color.whiteAlpha100};
   border-radius: 8px 0 0 8px;
   padding: 0;
 
-  background-color: ${props => (returnColor950(props.phaseName))};
+  background-color: ${props => returnColor950(props.phaseName)};
 
-  color: ${props => (returnColor50(props.phaseName))};
+  color: ${props => returnColor50(props.phaseName)};
 
   text-align: center;
 `;
@@ -76,7 +76,7 @@ interface ChangeNumButtonProps {
   phaseName: string;
 }
 const ChangeNumButton = styled.button<ChangeNumButtonProps>`
-  outline:none;
+  outline: none;
   background-color: transparent;
   border: none;
   align-items: center;
@@ -85,8 +85,8 @@ const ChangeNumButton = styled.button<ChangeNumButtonProps>`
   cursor: pointer;
   margin: 0;
   position: absolute;
-  padding:0;
-  color: ${props => (returnColor50(props.phaseName))};
+  padding: 0;
+  color: ${props => returnColor50(props.phaseName)};
 
   right: -1px;
 
@@ -95,7 +95,7 @@ const ChangeNumButton = styled.button<ChangeNumButtonProps>`
       return `
         bottom: 0;
         border-top: 1px solid ${props.theme.color.whiteAlpha100};
-      `
+      `;
     }
   }};
 
@@ -103,41 +103,42 @@ const ChangeNumButton = styled.button<ChangeNumButtonProps>`
   &:before {
     display: inline-block;
     position: absolute;
-    content: '';
+    content: "";
     width: 1rem;
     height: 2px;
     transform: translate(-50%, -50%);
   }
 
   /* &:hover {
-    background-color: ${props => (props.theme.color.whiteAlpha100)};
+    background-color: ${props => props.theme.color.whiteAlpha100};
   } */
 
   &:active {
-    background-color: ${props => (returnColor50(props.phaseName))};
-    color: ${props => (returnColor950(props.phaseName))};
+    background-color: ${props => returnColor50(props.phaseName)};
+    color: ${props => returnColor950(props.phaseName)};
   }
 `;
 
 type Props = {
   phaseName: string;
   labelText: string;
-  value:number;
-  onChange: (num:number) => void;
+  value: number;
+  onChange: (num: number) => void;
 };
 
-const NumInput = ({ phaseName, labelText, value, onChange }:Props ) => {
-
+const NumInput = ({ phaseName, labelText, value, onChange }: Props) => {
   const increaseValue = () => {
     onChange(value + 1);
-  } 
+  };
   const decreaseValue = () => {
     if (value > 1) onChange(value - 1);
-  } 
+  };
 
   return (
     <Wrapper>
-      <Label htmlFor={labelText} phaseName={phaseName}>{labelText}</Label>
+      <Label htmlFor={labelText} phaseName={phaseName}>
+        {labelText}
+      </Label>
       <ArrowsWrapper>
         <Input
           type="number"
@@ -147,11 +148,15 @@ const NumInput = ({ phaseName, labelText, value, onChange }:Props ) => {
           onChange={event => onChange(parseInt(event.target.value))}
           min={1}
         />
-        <ChangeNumButton isDown={false} onClick={increaseValue} phaseName={phaseName}>⏶</ChangeNumButton>
-        <ChangeNumButton isDown={true} onClick={decreaseValue} phaseName={phaseName}>⏷</ChangeNumButton>
+        <ChangeNumButton isDown={false} onClick={increaseValue} phaseName={phaseName}>
+          ⏶
+        </ChangeNumButton>
+        <ChangeNumButton isDown={true} onClick={decreaseValue} phaseName={phaseName}>
+          ⏷
+        </ChangeNumButton>
       </ArrowsWrapper>
     </Wrapper>
   );
-}
+};
 
 export default NumInput;

@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import close_icon from './close.svg';
+import close_icon from "./close.svg";
 
-import ToggleInput from '../ToggleInput/ToggleInput';
-import NumInput from '../NumInput/NumInput';
+import ToggleInput from "../ToggleInput/ToggleInput";
+import NumInput from "../NumInput/NumInput";
 
 interface WrapperProps {
   isOpened: boolean;
@@ -19,7 +19,7 @@ const Wrapper = styled.div<WrapperProps>`
   justify-content: center;
   align-items: center;
 
-  background-color: rgba(255,255,255,0.15);
+  background-color: rgba(255, 255, 255, 0.15);
 
   visibility: hidden;
   opacity: 0;
@@ -31,7 +31,7 @@ const Wrapper = styled.div<WrapperProps>`
         visibility: visible;
         opacity: 1;
         transition: all 0.2s;
-      `
+      `;
     }
   }};
 `;
@@ -62,7 +62,7 @@ const Window = styled.dialog<WindowProps>`
       return `
         transform: translateY(0px);
         transition: all 0.2s;
-      `
+      `;
     }
   }};
 
@@ -71,15 +71,15 @@ const Window = styled.dialog<WindowProps>`
       case "short":
         return `
           background-color: ${props.theme.color.green950};
-        `
+        `;
       case "long":
         return `
           background-color: ${props.theme.color.blue950};
-        `
+        `;
       default:
         return `
           background-color: ${props.theme.color.red950};
-        `
+        `;
     }
   }};
 `;
@@ -104,15 +104,15 @@ const Title = styled.h1<TitleProps>`
       case "short":
         return `
           color: ${props.theme.color.green50};
-        `
+        `;
       case "long":
         return `
           color: ${props.theme.color.blue50};
-        `
+        `;
       default:
         return `
           color: ${props.theme.color.red50};
-        `
+        `;
     }
   }};
 `;
@@ -129,7 +129,7 @@ const CloseButton = styled.button`
 
   border: 0;
 
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
 `;
 
 interface CloseIconProps {
@@ -147,15 +147,15 @@ const CloseIcon = styled.svg<CloseIconProps>`
       case "short":
         return `
           background-color: ${props.theme.color.green50};
-        `
+        `;
       case "long":
         return `
           background-color: ${props.theme.color.blue50};
-        `
+        `;
       default:
         return `
           background-color: ${props.theme.color.red50};
-        `
+        `;
     }
   }};
 `;
@@ -176,41 +176,28 @@ const Settings = ({
   settingsStateNumbers,
   settingsHandlersBoolean,
   settingsHandlersNumbers,
-}:Props ) => {
-
+}: Props) => {
   const [settingsOpened, isDarkMode, isAutoResume, isSoundOn, areNotificationsOn] = settingsStateBoolean;
   const [toggleDarkMode, toggleAutoResume, toggleSound, toggleNotifications] = settingsHandlersBoolean;
   const [focusTime, numberOfPomodoros, shortBreakTime, longBreakTime] = settingsStateNumbers;
   const [onSetFocusTime, onSetNumberOfPomodoros, onSetShortBreakTime, onSetLongBreakTime] = settingsHandlersNumbers;
 
-  const closeOnClickOutside = (parentElement:any) => (parentElement.id === "root") && onClose();
+  const closeOnClickOutside = (parentElement: any) => parentElement.id === "root" && onClose();
 
   return (
-    <Wrapper isOpened={settingsOpened} onClick={(event) => closeOnClickOutside((event.target as HTMLTextAreaElement).parentElement)}>
+    <Wrapper
+      isOpened={settingsOpened}
+      onClick={event => closeOnClickOutside((event.target as HTMLTextAreaElement).parentElement)}
+    >
       <Window isOpened={settingsOpened} phaseName={phaseName}>
         <Header>
           <Title phaseName={phaseName}>Settings</Title>
           <CloseButton onClick={onClose}>
-            <CloseIcon
-              phaseName={phaseName}
-              src={close_icon}
-              title={'Close icon'}
-              alt={'Close'}
-            />
+            <CloseIcon phaseName={phaseName} src={close_icon} title={"Close icon"} alt={"Close"} />
           </CloseButton>
         </Header>
-        <ToggleInput
-          phaseName={phaseName}
-          labelText="Dark mode" 
-          onChange={toggleDarkMode}
-          value={isDarkMode}
-        />
-        <NumInput
-          phaseName={phaseName}
-          labelText="Focus length"
-          value={focusTime}
-          onChange={onSetFocusTime}
-        />
+        <ToggleInput phaseName={phaseName} labelText="Dark mode" onChange={toggleDarkMode} value={isDarkMode} />
+        <NumInput phaseName={phaseName} labelText="Focus length" value={focusTime} onChange={onSetFocusTime} />
         <NumInput
           phaseName={phaseName}
           labelText="Pomodoros until long break"
@@ -235,12 +222,7 @@ const Settings = ({
           onChange={toggleAutoResume}
           value={isAutoResume}
         />
-        <ToggleInput
-          phaseName={phaseName}
-          labelText="Sound"
-          onChange={toggleSound}
-          value={isSoundOn}
-        />
+        <ToggleInput phaseName={phaseName} labelText="Sound" onChange={toggleSound} value={isSoundOn} />
         <ToggleInput
           phaseName={phaseName}
           labelText="Notifications"
@@ -250,6 +232,6 @@ const Settings = ({
       </Window>
     </Wrapper>
   );
-}
+};
 
 export default Settings;

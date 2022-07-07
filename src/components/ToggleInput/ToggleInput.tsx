@@ -1,7 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import theme from '../../theme';
-
+import theme from "../../theme";
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,7 +11,7 @@ const Wrapper = styled.div`
   height: 64px;
 `;
 
-const returnColor950 = (phaseName:string) => {
+const returnColor950 = (phaseName: string) => {
   switch (phaseName) {
     case "short":
       return theme.color.green950;
@@ -21,8 +20,8 @@ const returnColor950 = (phaseName:string) => {
     default:
       return theme.color.red950;
   }
-}
-const returnColor50 = (phaseName:string) => {
+};
+const returnColor50 = (phaseName: string) => {
   switch (phaseName) {
     case "short":
       return theme.color.green50;
@@ -31,13 +30,13 @@ const returnColor50 = (phaseName:string) => {
     default:
       return theme.color.red50;
   }
-}
+};
 
 interface LabelProps {
   phaseName: string;
 }
 const Label = styled.label<LabelProps>`
-  color: ${props => (returnColor50(props.phaseName))};
+  color: ${props => returnColor50(props.phaseName)};
 `;
 
 interface ToggleProps {
@@ -50,7 +49,7 @@ const Toggle = styled.input<ToggleProps>`
   height: 20px;
   margin: 0;
   vertical-align: center;
-  background-color: ${props => (props.theme.color.whiteAlpha200)};
+  background-color: ${props => props.theme.color.whiteAlpha200};
   border: 1px solid transparent;
   border-radius: 1000px;
   outline: none;
@@ -68,7 +67,7 @@ const Toggle = styled.input<ToggleProps>`
 
     width: 16px;
     height: 16px;
-    background-color: ${props => (returnColor950(props.phaseName))};
+    background-color: ${props => returnColor950(props.phaseName)};
     border-radius: 1000px;
 
     transform: translateX(0);
@@ -77,35 +76,35 @@ const Toggle = styled.input<ToggleProps>`
 
   &:checked:after {
     transform: translateX(calc(100% - 2px));
-    background-color: ${props => (returnColor950(props.phaseName))};
+    background-color: ${props => returnColor950(props.phaseName)};
   }
   &:checked {
-    background-color: ${props => (returnColor50(props.phaseName))};
+    background-color: ${props => returnColor50(props.phaseName)};
   }
 `;
-
 
 type Props = {
   phaseName: string;
   labelText: string;
   value: boolean;
-  onChange: (checked:boolean) => void;
+  onChange: (checked: boolean) => void;
 };
 
-const ToggleInput = ({ phaseName, labelText, value, onChange }:Props ) => {
-
+const ToggleInput = ({ phaseName, labelText, value, onChange }: Props) => {
   return (
     <Wrapper>
-      <Label htmlFor={labelText} phaseName={phaseName}>{labelText}</Label>
+      <Label htmlFor={labelText} phaseName={phaseName}>
+        {labelText}
+      </Label>
       <Toggle
         id={labelText}
         type="checkbox"
-        phaseName={phaseName} 
+        phaseName={phaseName}
         defaultChecked={value}
         onChange={event => onChange(event.target.checked)}
-      />   
+      />
     </Wrapper>
   );
-}
+};
 
 export default ToggleInput;

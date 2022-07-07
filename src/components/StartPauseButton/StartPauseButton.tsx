@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import starticon from './start.svg';
-import pauseicon from './pause.svg';
+import starticon from "./start.svg";
+import pauseicon from "./pause.svg";
 
 interface WrapperProps {
   phaseName: string;
@@ -23,15 +23,15 @@ const Wrapper = styled.button<WrapperProps>`
       case "short":
         return `
           background-color: ${props.theme.color.greenAlpha700};
-        `
+        `;
       case "long":
         return `
           background-color: ${props.theme.color.blueAlpha700};
-        `
+        `;
       default:
         return `
           background-color: ${props.theme.color.redAlpha700};
-        `
+        `;
     }
   }};
 `;
@@ -51,15 +51,15 @@ const Icon = styled.svg<IconProps>`
       case "short":
         return `
           background-color: ${props.theme.color.green50};
-        `
+        `;
       case "long":
         return `
           background-color: ${props.theme.color.blue50};
-        `
+        `;
       default:
         return `
           background-color: ${props.theme.color.red50};
-        `
+        `;
     }
   }};
 `;
@@ -70,18 +70,17 @@ type Props = {
   toggleTimer: () => void;
 };
 
-const StartPauseButton = ({ phaseName, isRunning, toggleTimer }:Props ) => {
-
+const StartPauseButton = ({ phaseName, isRunning, toggleTimer }: Props) => {
   return (
-    <Wrapper phaseName={phaseName} onClick={toggleTimer} aria-label='Start/Pause'>
+    <Wrapper phaseName={phaseName} onClick={toggleTimer} aria-label="Start/Pause">
       <Icon
         phaseName={phaseName}
         src={isRunning ? pauseicon : starticon}
-        title={isRunning ? 'Pause icon' : 'Start icon'}
-        alt={isRunning ? 'Pause' : 'Start'}
+        title={isRunning ? "Pause icon" : "Start icon"}
+        alt={isRunning ? "Pause" : "Start"}
       />
     </Wrapper>
   );
-}
+};
 
 export default StartPauseButton;

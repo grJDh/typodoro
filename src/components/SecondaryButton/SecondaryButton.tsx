@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 interface WrapperProps {
   phaseName: string;
@@ -9,7 +9,7 @@ const Wrapper = styled.button<WrapperProps>`
   align-items: center;
 
   cursor: pointer;
-  
+
   width: 80px;
   height: 80px;
   border: 0;
@@ -20,15 +20,15 @@ const Wrapper = styled.button<WrapperProps>`
       case "short":
         return `
           background-color: ${props.theme.color.greenAlpha100};
-        `
+        `;
       case "long":
         return `
           background-color: ${props.theme.color.blueAlpha100};
-        `
+        `;
       default:
         return `
           background-color: ${props.theme.color.redAlpha100};
-        `
+        `;
     }
   }};
 `;
@@ -48,15 +48,15 @@ const Icon = styled.svg<IconProps>`
       case "short":
         return `
           background-color: ${props.theme.color.green50};
-        `
+        `;
       case "long":
         return `
           background-color: ${props.theme.color.blue50};
-        `
+        `;
       default:
         return `
           background-color: ${props.theme.color.red50};
-        `
+        `;
     }
   }};
 `;
@@ -70,12 +70,11 @@ type Props = {
 };
 
 const SecondaryButton = ({ phaseName, icon, alt, aria, onClick }: Props) => {
-
   return (
     <Wrapper phaseName={phaseName} aria-label={aria} onClick={onClick}>
       <Icon phaseName={phaseName} src={icon} alt={alt} title={aria + " icon"} />
     </Wrapper>
   );
-}
+};
 
 export default SecondaryButton;
