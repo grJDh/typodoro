@@ -73,13 +73,13 @@ const App = () => {
   }
   const phasesQueue = [...tempArray.splice(0, tempArray.length - 1), "long"];
 
-  // const [focusTime, setFocusTime] = useState([0, 3]); //minutues, seconds
-  // const [shortBreakTime, setShortBreakTime] = useState([0, 2]);
-  // const [longBreakTime, setLongBreakTime] = useState([0, 5]);
+  const [focusTime, setFocusTime] = useState([0, 3]); //minutues, seconds
+  const [shortBreakTime, setShortBreakTime] = useState([0, 2]);
+  const [longBreakTime, setLongBreakTime] = useState([0, 5]);
 
-  const [focusTime, setFocusTime] = useState(getValueFromLocalStorage("focusTime", [25, 0])); //minutues, seconds
-  const [shortBreakTime, setShortBreakTime] = useState(getValueFromLocalStorage("shortBreakTime", [5, 0]));
-  const [longBreakTime, setLongBreakTime] = useState(getValueFromLocalStorage("longBreakTime", [25, 0]));
+  // const [focusTime, setFocusTime] = useState(getValueFromLocalStorage("focusTime", [25, 0])); //minutues, seconds
+  // const [shortBreakTime, setShortBreakTime] = useState(getValueFromLocalStorage("shortBreakTime", [5, 0]));
+  // const [longBreakTime, setLongBreakTime] = useState(getValueFromLocalStorage("longBreakTime", [25, 0]));
 
   const [isRunning, setIsRunning] = useState(false);
   const [currentTime, setCurrentTime] = useState(focusTime);
@@ -91,7 +91,11 @@ const App = () => {
   const [isSoundOn, setIsSoundOn] = useState(getValueFromLocalStorage("isSoundOn", false));
   const [areNotificationsOn, setAreNotificationsOn] = useState(getValueFromLocalStorage("areNotificationsOn", false));
 
-  const toggleTimer = () => setIsRunning(!isRunning);
+  let ring_audio = new Audio("/ring.mp3")
+
+  const toggleTimer = () => {
+    setIsRunning(!isRunning);
+  }
 
   const changeToTheNextPhase = () => {
     const nextPhase = currentPhase === phasesQueue.length - 1 ? 0 : currentPhase + 1;
@@ -120,6 +124,7 @@ const App = () => {
           } else {
             if (isRunning && !isAutoResume) toggleTimer();
             changeToTheNextPhase();
+            ring_audio.play();
           }
         } else {
           setCurrentTime([currentTime[0], currentTime[1] - 1]);
