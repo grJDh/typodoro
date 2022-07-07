@@ -137,11 +137,9 @@ type Props = {
   phaseName: string;
   onClose: () => void;
   settingsStateBoolean: boolean[];
-  settingsStateNumbers: number[][];
+  settingsStateNumbers: number[];
   settingsHandlersBoolean: ((data: boolean) => void)[];
-  settingsHandlersNumbers: ((data: number[]) => void)[];
-  numberOfPomodoros: number;
-  setNumberOfPomodoros: (data: number) => void;
+  settingsHandlersNumbers: ((data: number) => void)[];
 };
 
 const Settings = ({
@@ -151,24 +149,12 @@ const Settings = ({
   settingsStateNumbers,
   settingsHandlersBoolean,
   settingsHandlersNumbers,
-  numberOfPomodoros,
-  setNumberOfPomodoros
 }:Props ) => {
 
   const [settingsOpened, isDarkMode, isAutoResume, isSoundOn, areNotificationsOn] = settingsStateBoolean;
-  const [setIsDarkMode, setIsAutoResume, setIsSoundOn, setAreNotificationsOn] = settingsHandlersBoolean;
-  const [focusTime, shortBreakTime, longBreakTime] = settingsStateNumbers;
-  const [setFocusTime, setShortBreakTime, setLongBreakTime] = settingsHandlersNumbers;
-
-  const toggleDarkMode = (checked:boolean) => setIsDarkMode(checked);
-  const toggleAutoResume = (checked:boolean) => setIsAutoResume(checked);
-  const toggleSound = (checked:boolean) => setIsSoundOn(checked);
-  const toggleNotifications = (checked:boolean) => setAreNotificationsOn(checked);
-
-  const onSetFocusTime = (num:number) => setFocusTime([num, 0]);
-  const onSetNumberOfPomodoros = (num:number) => setNumberOfPomodoros(num);
-  const onSetShortBreakTime = (num:number) => setShortBreakTime([num, 0]);
-  const onSetLongBreakTime = (num:number) => setLongBreakTime([num, 0]);
+  const [toggleDarkMode, toggleAutoResume, toggleSound, toggleNotifications] = settingsHandlersBoolean;
+  const [focusTime, numberOfPomodoros, shortBreakTime, longBreakTime] = settingsStateNumbers;
+  const [onSetFocusTime, onSetNumberOfPomodoros, onSetShortBreakTime, onSetLongBreakTime] = settingsHandlersNumbers;
 
   const closeOnClickOutside = (parentElement:any) => (parentElement.id === "root") && onClose();
 
@@ -190,49 +176,49 @@ const Settings = ({
           phaseName={phaseName}
           labelText="Dark mode" 
           onChange={toggleDarkMode}
-          defaultValue={isDarkMode}
+          value={isDarkMode}
         />
         <NumInput
           phaseName={phaseName}
           labelText="Focus length"
-          defaultValue={focusTime[0]}
+          value={focusTime}
           onChange={onSetFocusTime}
         />
         <NumInput
           phaseName={phaseName}
           labelText="Pomodoros until long break"
-          defaultValue={numberOfPomodoros}
+          value={numberOfPomodoros}
           onChange={onSetNumberOfPomodoros}
         />
         <NumInput
           phaseName={phaseName}
           labelText="Short break length"
-          defaultValue={shortBreakTime[0]}
+          value={shortBreakTime}
           onChange={onSetShortBreakTime}
         />
         <NumInput
           phaseName={phaseName}
           labelText="Long break length"
-          defaultValue={longBreakTime[0]}
+          value={longBreakTime}
           onChange={onSetLongBreakTime}
         />
         <ToggleInput
           phaseName={phaseName}
           labelText="Auto resume timer"
           onChange={toggleAutoResume}
-          defaultValue={isAutoResume}
+          value={isAutoResume}
         />
         <ToggleInput
           phaseName={phaseName}
           labelText="Sound"
           onChange={toggleSound}
-          defaultValue={isSoundOn}
+          value={isSoundOn}
         />
         <ToggleInput
           phaseName={phaseName}
           labelText="Notifications"
           onChange={toggleNotifications}
-          defaultValue={areNotificationsOn}
+          value={areNotificationsOn}
         />
       </Window>
     </Wrapper>
