@@ -52,10 +52,6 @@ const ButtonsWrapper = styled.div`
   justify-content: space-between;
 `;
 
-//fix timer with Date()
-//fix skip button
-//when you change focus or any other time, it doesn't change current time even if it's start
-
 const App = () => {
 
   const getValueFromLocalStorage = (key:string, defaultValue:any) => {
