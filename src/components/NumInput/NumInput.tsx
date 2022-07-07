@@ -66,13 +66,14 @@ const Input = styled.input<InputProps>`
 
   background-color: ${props => (returnColor950(props.phaseName))};
 
-  color: ${props => (props.theme.color.red50)};
+  color: ${props => (returnColor50(props.phaseName))};
 
   text-align: center;
 `;
 
 interface ChangeNumButtonProps {
   isDown: boolean;
+  phaseName: string;
 }
 const ChangeNumButton = styled.button<ChangeNumButtonProps>`
   outline:none;
@@ -85,7 +86,7 @@ const ChangeNumButton = styled.button<ChangeNumButtonProps>`
   margin: 0;
   position: absolute;
   padding:0;
-  color: white;
+  color: ${props => (returnColor50(props.phaseName))};
 
   right: -1px;
 
@@ -105,19 +106,34 @@ const ChangeNumButton = styled.button<ChangeNumButtonProps>`
     content: '';
     width: 1rem;
     height: 2px;
-    /* background-color: #212121; */
     transform: translate(-50%, -50%);
+  }
+
+  /* &:hover {
+    background-color: ${props => (props.theme.color.whiteAlpha100)};
+  } */
+
+  &:active {
+    background-color: ${props => (returnColor50(props.phaseName))};
+    color: ${props => (returnColor950(props.phaseName))};
   }
 `;
 
 type Props = {
   phaseName: string;
   labelText: string;
-  defaultValue:number;
+  value:number;
   onChange: (num:number) => void;
 };
 
-const NumInput = ({ phaseName, labelText, defaultValue, onChange }:Props ) => {
+const NumInput = ({ phaseName, labelText, value, onChange }:Props ) => {
+
+  const increaseValue = () => {
+    onChange(value + 1);
+  } 
+  const decreaseValue = () => {
+    if (value > 1) onChange(value - 1);
+  } 
 
   return (
     <Wrapper>
@@ -127,11 +143,12 @@ const NumInput = ({ phaseName, labelText, defaultValue, onChange }:Props ) => {
           type="number"
           id={labelText}
           phaseName={phaseName}
-          defaultValue={defaultValue}
+          value={value}
           onChange={event => onChange(parseInt(event.target.value))}
+          min={1}
         />
-        <ChangeNumButton isDown={false}>⏶</ChangeNumButton>
-        <ChangeNumButton isDown={true}>⏷</ChangeNumButton>
+        <ChangeNumButton isDown={false} onClick={increaseValue} phaseName={phaseName}>⏶</ChangeNumButton>
+        <ChangeNumButton isDown={true} onClick={decreaseValue} phaseName={phaseName}>⏷</ChangeNumButton>
       </ArrowsWrapper>
     </Wrapper>
   );
