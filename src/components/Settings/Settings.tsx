@@ -14,16 +14,31 @@ const Wrapper = styled.div<WrapperProps>`
   width: 100%;
   z-index: 10;
 
-  display: ${props => (props.isOpened ? 'flex' : 'none')};
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   background-color: rgba(255,255,255,0.15);
+
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s;
+
+  ${props => {
+    if (props.isOpened) {
+      return `
+        visibility: visible;
+        opacity: 1;
+        transition: all 0.2s;
+      `
+    }
+  }};
 `;
 
 interface WindowProps {
   phaseName: string;
+  isOpened: boolean;
 }
 const Window = styled.dialog<WindowProps>`
   width: 448px;
@@ -38,6 +53,18 @@ const Window = styled.dialog<WindowProps>`
 
   padding: 24px;
   box-sizing: border-box;
+
+  transform: translateY(200%);
+  transition: all 0.2s;
+
+  ${props => {
+    if (props.isOpened) {
+      return `
+        transform: translateY(0px);
+        transition: all 0.2s;
+      `
+    }
+  }};
 
   ${props => {
     switch (props.phaseName) {
@@ -160,7 +187,7 @@ const Settings = ({
 
   return (
     <Wrapper isOpened={settingsOpened} onClick={(event) => closeOnClickOutside((event.target as HTMLTextAreaElement).parentElement)}>
-      <Window phaseName={phaseName}>
+      <Window isOpened={settingsOpened} phaseName={phaseName}>
         <Header>
           <Title phaseName={phaseName}>Settings</Title>
           <CloseButton onClick={onClose}>
