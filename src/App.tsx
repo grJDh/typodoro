@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 import { ThemeProvider } from 'styled-components';
 import { Normalize } from 'styled-normalize';
@@ -61,9 +61,6 @@ const App = () => {
   const getValueFromLocalStorage = (key:string, defaultValue:any) => {
     const localItemValue = localStorage.getItem(key);
 
-    // console.log(key, localItemValue, defaultValue)
-    localItemValue ? console.log(key, JSON.parse(localItemValue), defaultValue) : console.log("none")
-
     if (localItemValue === null) {
       localStorage.setItem(key, JSON.stringify(defaultValue));
       return defaultValue;
@@ -90,10 +87,8 @@ const App = () => {
   const [longBreakTime, setLongBreakTime] = useState(getValueFromLocalStorage('longBreakTime', [25, 0]));
 
   const [isRunning, setIsRunning] = useState(false);
-  const [currentTime, setCurrentTime] = useState(getValueFromLocalStorage('currentTime', focusTime));
-  const [currentPhase, setCurrentPhase] = useState(getValueFromLocalStorage('currentPhase', 0));
-  const [frozenTime, setFrozenTime] = useState(getValueFromLocalStorage('frozenTime', currentTime));
-  const [frozenPhase, setFrozenPhase] = useState(getValueFromLocalStorage('frozenPhase', currentPhase));
+  const [currentTime, setCurrentTime] = useState(focusTime);
+  const [currentPhase, setCurrentPhase] = useState(0);
 
   const [settingsOpened, setSettingsOpened] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(getValueFromLocalStorage('isDarkMode', true));
@@ -101,17 +96,10 @@ const App = () => {
   const [isSoundOn, setIsSoundOn] = useState(getValueFromLocalStorage('isSoundOn', false));
   const [areNotificationsOn, setAreNotificationsOn] = useState(getValueFromLocalStorage('areNotificationsOn', false));
   
-  const toggleTimer = () => {
-    setIsRunning(!isRunning);
-
-    if (isRunning) {
-      setFrozenTime(currentTime);
-      setFrozenPhase(currentPhase);
-    }
-  }
+  const toggleTimer = () => setIsRunning(!isRunning);
 
   const changeToTheNextPhase = () => {
-    const nextPhase = (currentPhase === 7) ? 0 : currentPhase + 1;
+    const nextPhase = (currentPhase === phasesQueue.length-1) ? 0 : currentPhase + 1;
     if (phasesQueue[currentPhase] === 'long') setCurrentPhase(0)
     else setCurrentPhase(currentPhase + 1);
 
@@ -128,41 +116,27 @@ const App = () => {
     }
   };
 
-  const skipPhase = () => {
-    if (isRunning) toggleTimer();
-
-    changeToTheNextPhase();
-
-    setFrozenTime(currentTime);
-    setFrozenPhase(currentPhase);
-  }
-
   useEffect(() => {
     if (isRunning) {
-      let timerOneSecondInterval = setTimeout(() => {
-        clearTimeout(timerOneSecondInterval);
+      let timerOneSecondInterval = setInterval(() => {
     
         if (currentTime[1] === 0) {
           if (currentTime[0] !== 0) {
             setCurrentTime([currentTime[0] - 1, 59]);
           } else {
+            if (isRunning && !isAutoResume) toggleTimer();
             changeToTheNextPhase();
           }
         } else {
           setCurrentTime([currentTime[0], currentTime[1] - 1]);
         }
       }, 1000);
-    }
-    else {
-      setCurrentTime(frozenTime);
-      setCurrentPhase(frozenPhase);
+
+      return () => clearInterval(timerOneSecondInterval);
     }
   });
 
-  const openSettings = () => {
-    if (isRunning) toggleTimer();
-    setSettingsOpened(true);
-  } 
+  const openSettings = () => setSettingsOpened(true);
   const closeSettings = () => setSettingsOpened(false);
 
   const toggleDarkMode = (checked:boolean) => {
@@ -189,35 +163,17 @@ const App = () => {
   const onSetFocusTime = (num:number) => {
     setFocusTime([num, 0]);
     updateValueInLocalStorage('focusTime', [num, 0]);
-    if (phasesQueue[currentPhase] === 'focus') {
-      setFrozenTime([num, 0]);
-      setCurrentTime([num, 0]);
-
-      updateValueInLocalStorage('frozenTime', [num, 0]);
-      updateValueInLocalStorage('currentTime', [num, 0]);
-    } 
+    if (phasesQueue[currentPhase] === 'focus') setCurrentTime([num, 0]);
   } 
   const onSetShortBreakTime = (num:number) => {
     setShortBreakTime([num, 0]);
     updateValueInLocalStorage('shortBreakTime', [num, 0]);
-    if (phasesQueue[currentPhase] === 'short') {
-      setFrozenTime([num, 0]);
-      setCurrentTime([num, 0]);
-
-      updateValueInLocalStorage('frozenTime', [num, 0]);
-      updateValueInLocalStorage('currentTime', [num, 0]);
-    } 
+    if (phasesQueue[currentPhase] === 'short') setCurrentTime([num, 0]);
   } 
   const onSetLongBreakTime = (num:number) => {
     setLongBreakTime([num, 0]);
     updateValueInLocalStorage('longBreakTime', [num, 0]);
-    if (phasesQueue[currentPhase] === 'long') {
-      setFrozenTime([num, 0]);
-      setCurrentTime([num, 0]);
-
-      updateValueInLocalStorage('frozenTime', [num, 0]);
-      updateValueInLocalStorage('currentTime', [num, 0]);
-    } 
+    if (phasesQueue[currentPhase] === 'long') setCurrentTime([num, 0]);
   }
   
   const settingsStateBoolean = [
@@ -293,7 +249,7 @@ const App = () => {
             icon={skip_icon}
             alt="Skip to the next phase"
             aria="Skip"
-            onClick={skipPhase}
+            onClick={changeToTheNextPhase}
           />
         </ButtonsWrapper>
 
