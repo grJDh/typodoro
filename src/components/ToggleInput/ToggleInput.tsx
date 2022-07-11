@@ -100,7 +100,7 @@ const ToggleInput = ({ phaseName, labelText, value, onChange }: Props) => {
         id={labelText}
         type="checkbox"
         phaseName={phaseName}
-        defaultChecked={value}
+        checked={value}
         onChange={event => onChange(event.target.checked)}
       />
     </Wrapper>
