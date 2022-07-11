@@ -11,7 +11,7 @@ describe("Secondary Button", () => {
     expect(screen.getByTitle("Skip icon")).toBeInTheDocument();
   });
 
-  test("Menu button renders correctly", () => {
+  test("Settings button renders correctly", () => {
     render(<App />);
 
     expect(screen.getByRole("button", { name: /settings/i })).toBeInTheDocument();
