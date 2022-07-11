@@ -196,33 +196,56 @@ const Settings = ({
             <CloseIcon phaseName={phaseName} src={close_icon} title={"Close icon"} alt={"Close"} />
           </CloseButton>
         </Header>
-        <ToggleInput phaseName={phaseName} labelText="Dark mode" onChange={toggleDarkMode} value={isDarkMode} />
-        <NumInput phaseName={phaseName} labelText="Focus length" value={focusTime} onChange={onSetFocusTime} />
+
+        <ToggleInput
+          phaseName={phaseName}
+          labelText="Dark mode"
+          onChange={toggleDarkMode}
+          value={isDarkMode}
+        />
+
+        <NumInput
+          phaseName={phaseName}
+          labelText="Focus length"
+          value={focusTime}
+          onChange={onSetFocusTime}
+        />
+
         <NumInput
           phaseName={phaseName}
           labelText="Pomodoros until long break"
           value={numberOfPomodoros}
           onChange={onSetNumberOfPomodoros}
         />
+
         <NumInput
           phaseName={phaseName}
           labelText="Short break length"
           value={shortBreakTime}
           onChange={onSetShortBreakTime}
         />
+
         <NumInput
           phaseName={phaseName}
           labelText="Long break length"
           value={longBreakTime}
           onChange={onSetLongBreakTime}
         />
+
         <ToggleInput
           phaseName={phaseName}
           labelText="Auto resume timer"
           onChange={toggleAutoResume}
           value={isAutoResume}
         />
-        <ToggleInput phaseName={phaseName} labelText="Sound" onChange={toggleSound} value={isSoundOn} />
+
+        <ToggleInput
+          phaseName={phaseName}
+          labelText="Sound"
+          onChange={toggleSound}
+          value={isSoundOn}
+        />
+        
         <ToggleInput
           phaseName={phaseName}
           labelText="Notifications"
