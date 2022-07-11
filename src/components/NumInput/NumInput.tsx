@@ -39,7 +39,7 @@ const Label = styled.label<LabelProps>`
   color: ${props => returnColor50(props.phaseName)};
 `;
 
-const ArrowsWrapper = styled.div`
+const InputWrapper = styled.div`
   border: 1px solid ${props => props.theme.color.whiteAlpha100};
   border-radius: 8px;
   display: inline-flex;
@@ -139,7 +139,7 @@ const NumInput = ({ phaseName, labelText, value, onChange }: Props) => {
       <Label htmlFor={labelText} phaseName={phaseName}>
         {labelText}
       </Label>
-      <ArrowsWrapper>
+      <InputWrapper>
         <Input
           type="number"
           id={labelText}
@@ -154,7 +154,7 @@ const NumInput = ({ phaseName, labelText, value, onChange }: Props) => {
         <ChangeNumButton isDown={true} onClick={decreaseValue} phaseName={phaseName}>
           ⏷
         </ChangeNumButton>
-      </ArrowsWrapper>
+      </InputWrapper>
     </Wrapper>
   );
 };
