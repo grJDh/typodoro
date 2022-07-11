@@ -6,7 +6,11 @@ import theme from "./theme";
 import App from "./App";
 
 describe("Timer is working", () => {
+
+  //makeshift constants because I can't import them from App
   const phasesQueue = ["focus", "short", "focus", "short", "focus", "short", "focus", "long"];
+
+  const isAutoResume = false;
 
   const focusTime = [25, 0]; //minutues, seconds
   const shortBreakTime = [5, 0];
@@ -62,7 +66,7 @@ describe("Timer is working", () => {
 
     const [minutes, seconds] = renderAppAndCheckTimer();
 
-    const phaseName = screen.getByRole("heading", { name: /Focus/i });
+    const phaseName = screen.getByRole("heading", { name: /focus/i });
     const phaseIcon = screen.getByTitle("Focus icon");
 
     startTimer();
@@ -115,6 +119,8 @@ describe("Timer is working", () => {
           jest.advanceTimersToNextTimer();
         });
       }
+
+      if (!isAutoResume) startTimer();
     });
   });
 
@@ -130,45 +136,6 @@ describe("Timer is working", () => {
     expect(seconds).toHaveTextContent(shortBreakTime[1].toString());
   });
 
-  test.skip("Pause button works correctly", done => {
-    // it may seem strange to test it, but before if you pause a timer it would tick one more second and only then stop
-    // this test tests this behaviour
-
-    // jest.useFakeTimers();
-    const [minutes, seconds] = renderAppAndCheckTimer();
-
-    const startTimerButton = screen.getByRole("button", { name: /Start/i });
-    const startTimetButtinIcon = screen.getByTitle("Start icon");
-
-    userEvent.click(startTimerButton);
-
-    expect(startTimetButtinIcon).toHaveAttribute("title", "Pause icon");
-    // screen.debug(startTimetButtinIcon)
-
-    userEvent.click(startTimerButton);
-
-    // setTimeout(() => {
-    //   console.log(1)
-
-    // }, 1000);
-
-    // screen.debug(startTimetButtinIcon)
-
-    // act(() => {
-    //   jest.runAllTimers();
-    // });
-
-    setTimeout(() => {
-      expect(startTimetButtinIcon).toHaveAttribute("title", "Start");
-      screen.debug(minutes);
-      screen.debug(seconds);
-      done();
-    }, 2000);
-
-    // expect(minutes).toHaveTextContent((focusTime[0] - 1).toString());
-    // expect(seconds).toHaveTextContent('58');
-  });
-
   test("Colors change correctly", () => {
     renderAppAndCheckTimer();
 
@@ -179,8 +146,8 @@ describe("Timer is working", () => {
     const startPauseButtonIcon = screen.getByTitle("Start icon");
     const skipButton = screen.getByRole("button", { name: /skip/i });
     const skipButtonIcon = screen.getByTitle("Skip icon");
-    const menuButton = screen.getByRole("button", { name: /menu/i });
-    const menuButtonIcon = screen.getByTitle("Menu icon");
+    const settingsButton = screen.getByRole("button", { name: /settings/i });
+    const settingsButtonIcon = screen.getByTitle("Settings icon");
     const phaseWrapper = screen.getByTestId("PhaseWrapper");
     const phaseTitle = screen.getByRole("heading", { name: /Focus/i });
     const phaseIcon = screen.getByTitle("Focus icon");
@@ -202,8 +169,8 @@ describe("Timer is working", () => {
       expect(skipButton).toHaveStyle(`background-color: ${arrayOfAlpha100Colors[phaseNum]}`);
       expect(skipButtonIcon).toHaveStyle(`background-color: ${arrayOf50Colors[phaseNum]}`);
 
-      expect(menuButton).toHaveStyle(`background-color: ${arrayOfAlpha100Colors[phaseNum]}`);
-      expect(menuButtonIcon).toHaveStyle(`background-color: ${arrayOf50Colors[phaseNum]}`);
+      expect(settingsButton).toHaveStyle(`background-color: ${arrayOfAlpha100Colors[phaseNum]}`);
+      expect(settingsButtonIcon).toHaveStyle(`background-color: ${arrayOf50Colors[phaseNum]}`);
 
       expect(phaseWrapper).toHaveStyle(`background-color: ${arrayOfAlpha100Colors[phaseNum]}`);
       expect(phaseWrapper).toHaveStyle(`border-color: ${arrayOf50Colors[phaseNum]}`);
