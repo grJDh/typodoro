@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import theme from "../../theme";
 
-const Wrapper = styled.label`
+const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -148,10 +148,10 @@ const NumInput = ({ phaseName, labelText, value, onChange }: Props) => {
           onChange={event => onChange(parseInt(event.target.value))}
           min={1}
         />
-        <ChangeNumButton isDown={false} onClick={increaseValue} phaseName={phaseName}>
+        <ChangeNumButton isDown={false} onClick={increaseValue} phaseName={phaseName} data-testid={labelText + " +"}>
           ⏶
         </ChangeNumButton>
-        <ChangeNumButton isDown={true} onClick={decreaseValue} phaseName={phaseName}>
+        <ChangeNumButton isDown={true} onClick={decreaseValue} phaseName={phaseName}  data-testid={labelText + " -"}>
           ⏷
         </ChangeNumButton>
       </InputWrapper>
