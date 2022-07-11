@@ -5,12 +5,19 @@ import App from '../../App';
 
 describe('Toggle Input', () => {
 
-  test('blablabla', () => {
+  test('Toggle Input toggles', () => {
     render(<App />);
 
-    const startTimerButton = screen.getByLabelText('Dark mode')
+    const toggleButton = screen.getByLabelText('Dark mode')
 
-    // screen.debug(startTimerButton)
+    expect(toggleButton).toBeChecked();
+    expect(toggleButton).toHaveStyle(`background-color: #FFF2F2`); 
+    // expect(toggleButton).toHaveStyle(`background-color: #0D0404`); //still don't understand how to test style of ::after
+
+    userEvent.click(toggleButton);
+
+    expect(toggleButton).not.toBeChecked();
+    expect(toggleButton).toHaveStyle(`background-color: #FFFFFF3d`);
   });
 })
 
